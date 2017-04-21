@@ -8,6 +8,7 @@
         <kemitix-checkstyle-ruleset.level>5-complexity</kemitix-checkstyle-ruleset.level>
         <junit.version>4.12</junit.version>
         <assertj.version>3.6.2</assertj.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     </properties>
 
     <parent>
@@ -48,6 +49,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
             </plugin>
         </plugins>
     </build>
