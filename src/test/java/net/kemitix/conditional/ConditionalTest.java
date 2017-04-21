@@ -166,6 +166,26 @@ public class ConditionalTest {
         thenNoResponseRuns();
     }
 
+    @Test
+    public void whereTrueChainedThensBothRuns() {
+        //when
+        Condition.where(true)
+                 .then(thenResponse)
+                 .then(otherwiseResponse);
+        //then
+        thenBothResponsesRun();
+    }
+
+    @Test
+    public void whereFalseChainedThensNothingRuns() {
+        //when
+        Condition.where(false)
+                 .then(thenResponse)
+                 .then(otherwiseResponse);
+        //then
+        thenNoResponseRuns();
+    }
+
     private void whenOr(final boolean firstClause, final boolean secondClause) {
         Condition.where(firstClause)
                  .or(secondClause)
