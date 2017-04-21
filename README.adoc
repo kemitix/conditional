@@ -146,7 +146,7 @@ if (isFalse()) {
 ----
 Condition.where(isFalse())
          .then(() -> doSomething())
-         .otherwise(isTrue)
+         .otherwise(isTrue())
          .then(() -> doSomethingElse());
 ----
 
