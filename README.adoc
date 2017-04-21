@@ -1,0 +1,152 @@
+# Conditional
+
+If-then-else in a functional-style.
+
+## Usage
+
+### if-then
+
+[[source,java]]
+----
+if (isTrue()) {
+    doSomething();
+}
+----
+
+[[source,java]]
+----
+Condition.where(isTrue())
+         .then(() -> doSomething());
+----
+
+### if-then-else
+
+[[source,java]]
+----
+if (isTrue()) {
+    doSomething();
+} else {
+    doSomethingElse();
+}
+----
+
+[[source,java]]
+----
+Condition.where(isTrue())
+         .then(() -> doSomething())
+         .otherwise(() -> doSomethingElse());
+----
+
+### if-and-then-else
+
+[[source,java]]
+----
+if (isTrue() && isAlsoTrue()) {
+    doSomething();
+} else {
+    doSomethingElse();
+}
+----
+
+[[source,java]]
+----
+Condition.where(isTrue())
+         .and(isAlsoTrue())
+         .then(() -> doSomething())
+         .otherwise(() -> doSomethingElse());
+----
+
+### if-or-then-else
+
+[[source,java]]
+----
+if (isTrue() || alternativeIsTrue()) {
+    doSomething();
+} else {
+    doSomethingElse();
+}
+----
+
+[[source,java]]
+----
+Condition.where(isTrue())
+         .or(alternativeIsTrue())
+         .then(() -> doSomething())
+         .otherwise(() -> doSomethingElse());
+----
+
+### if-not-then-else
+
+[[source,java]]
+----
+if (!isFalse()) {
+    doSomething();
+} else {
+    doSomethingElse();
+}
+----
+
+[[source,java]]
+----
+Condition.whereNot(isFalse())
+         .then(() -> doSomething())
+         .otherwise(() -> doSomethingElse());
+----
+
+### if-and-not-then-else
+
+[[source,java]]
+----
+if (isTrue() || !isFalse()) {
+    doSomething();
+} else {
+    doSomethingElse();
+}
+----
+
+[[source,java]]
+----
+Condition.where(isTrue())
+         .andNot(isFalse())
+         .then(() -> doSomething())
+         .otherwise(() -> doSomethingElse());
+----
+
+### if-or-not-then-else
+
+[[source,java]]
+----
+if (isFalse() || !isAlsoFalse()) {
+    doSomething();
+} else {
+    doSomethingElse();
+}
+----
+
+[[source,java]]
+----
+Condition.where(isFalse())
+         .orNot(isAlsoFalse())
+         .then(() -> doSomething())
+         .otherwise(() -> doSomethingElse());
+----
+
+### if-then-if-then
+
+[[source,java]]
+----
+if (isTrue()) {
+    doSomething();
+    if (isAlsoTrue()) {
+        doSomethingElse();
+    }
+}
+----
+
+[[source,java]]
+----
+Condition.where(isTrue())
+         .then(() -> doSomething())
+         .and(isAlsoTrue())
+         .then(() -> doSomethingElse());
+----
