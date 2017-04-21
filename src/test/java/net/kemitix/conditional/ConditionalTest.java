@@ -115,6 +115,35 @@ public class ConditionalTest {
         thenTheOtherwiseResponseRuns();
     }
 
+    @Test
+    public void whereNotFalseThenRuns() {
+        //when
+        Condition.whereNot(false)
+                 .then(thenResponse);
+        //then
+        thenTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereTrueAndNotFalseThenRuns() {
+        //when
+        Condition.where(true)
+                 .andNot(false)
+                 .then(thenResponse);
+        //then
+        thenTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereFalseOrNotFalseThenRuns() {
+        //when
+        Condition.where(false)
+                 .orNot(false)
+                 .then(thenResponse);
+        //then
+        thenTheThenResponseRuns();
+    }
+
     private void whenOr(final boolean firstClause, final boolean secondClause) {
         Condition.where(firstClause)
                  .or(secondClause)

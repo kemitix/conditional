@@ -29,7 +29,7 @@ package net.kemitix.conditional;
 public interface Condition {
 
     /**
-     * Create a new {@code Condition}.
+     * Create a new {@code Condition} for the clause.
      *
      * @param clause the condition to test
      *
@@ -43,6 +43,17 @@ public interface Condition {
     }
 
     /**
+     * Create a new {@code Condition} for the boolean opposite of the clause.
+     *
+     * @param clause the condition to test
+     *
+     * @return the Condition
+     */
+    static Condition whereNot(boolean clause) {
+        return where(!clause);
+    }
+
+    /**
      * Logically AND combine the current {@code Condition} with the clause.
      *
      * @param clause the condition to test
@@ -52,6 +63,17 @@ public interface Condition {
     Condition and(boolean clause);
 
     /**
+     * Logically AND combine the current {@code Condition} with boolean opposite of the clause.
+     *
+     * @param clause the condition to test
+     *
+     * @return the Condition
+     */
+    default Condition andNot(boolean clause) {
+        return and(!clause);
+    }
+
+    /**
      * Logically OR combine the current {@code Condition} with the clause.
      *
      * @param clause the condition to test
@@ -59,6 +81,17 @@ public interface Condition {
      * @return the Condition
      */
     Condition or(boolean clause);
+
+    /**
+     * Logically OR combine the current {@code Condition} with the boolean opposite of the clause.
+     *
+     * @param clause the condition to test
+     *
+     * @return the Condition
+     */
+    default Condition orNot(boolean clause) {
+        return or(!clause);
+    }
 
     /**
      * Perform this response if the {@code Condition} is {@code true}.
