@@ -180,23 +180,43 @@ public class ConditionalTest {
     }
 
     private void thenBothResponsesRun() {
-        assertThat(thenFlag).isTrue();
-        assertThat(otherwiseFlag).isTrue();
+        theThenResponseRan();
+        theOtherwiseResponseRan();
     }
 
     private void thenTheThenResponseRuns() {
-        assertThat(thenFlag).isTrue();
-        assertThat(otherwiseFlag).isFalse();
+        theThenResponseRan();
+        theOtherwiseResponseDidNotRun();
     }
 
     private void thenTheOtherwiseResponseRuns() {
-        assertThat(thenFlag).isFalse();
-        assertThat(otherwiseFlag).isTrue();
+        theThenResponseDidNotRun();
+        theOtherwiseResponseRan();
+    }
+
+    private void theOtherwiseResponseRan() {
+        assertThat(otherwiseFlag).as("otherwise response runs")
+                                 .isTrue();
+    }
+
+    private void theThenResponseRan() {
+        assertThat(thenFlag).as("then response runs")
+                            .isTrue();
+    }
+
+    private void theOtherwiseResponseDidNotRun() {
+        assertThat(otherwiseFlag).as("otherwise response does not run")
+                                 .isFalse();
+    }
+
+    private void theThenResponseDidNotRun() {
+        assertThat(thenFlag).as("then response does not run")
+                            .isFalse();
     }
 
     private void thenNoResponseRuns() {
-        assertThat(thenFlag).isFalse();
-        assertThat(otherwiseFlag).isFalse();
+        theThenResponseDidNotRun();
+        theOtherwiseResponseDidNotRun();
     }
 
     private void when(final boolean firstClause, final boolean secondClause) {
