@@ -110,6 +110,17 @@ public interface Condition {
     void otherwise(Runnable response);
 
     /**
+     * Create a new {@code Condition} for the clause as a continuation to an existing {@code Condition}.
+     *
+     * @param clause the condition to test
+     *
+     * @return the Condition
+     */
+    default Condition otherwise(boolean clause) {
+        return where(clause);
+    }
+
+    /**
      * A {@code Condition} that has evaluated to {@code true}.
      */
     class TrueCondition implements Condition {

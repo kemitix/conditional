@@ -131,6 +131,25 @@ Condition.where(isFalse())
          .otherwise(() -> doSomethingElse());
 ----
 
+### if-then-else-if
+
+[[source,java]]
+----
+if (isFalse()) {
+    doSomething();
+} else if (isTrue()) {
+    doSomethingElse();
+}
+----
+
+[[source,java]]
+----
+Condition.where(isFalse())
+         .then(() -> doSomething())
+         .otherwise(isTrue)
+         .then(() -> doSomethingElse());
+----
+
 ### if-then-if-then
 
 [[source,java]]
