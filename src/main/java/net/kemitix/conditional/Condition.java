@@ -21,6 +21,9 @@
 
 package net.kemitix.conditional;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * If-then-else in a functional-style.
  *
@@ -37,9 +40,9 @@ public interface Condition {
      */
     static Condition where(final boolean clause) {
         if (clause) {
-            return new TrueCondition();
+            return TrueCondition.getInstance();
         }
-        return new FalseCondition();
+        return FalseCondition.getInstance();
     }
 
     /**
@@ -123,14 +126,21 @@ public interface Condition {
     /**
      * A {@code Condition} that has evaluated to {@code true}.
      */
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     class TrueCondition implements Condition {
+
+        private static final Condition INSTANCE = new TrueCondition();
+
+        private static Condition getInstance() {
+            return INSTANCE;
+        }
 
         @Override
         public Condition and(final boolean clause) {
             if (clause) {
                 return this;
             }
-            return new FalseCondition();
+            return FalseCondition.getInstance();
         }
 
         @Override
@@ -153,7 +163,14 @@ public interface Condition {
     /**
      * A {@code Condition} that has evaluated to {@code false}.
      */
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     class FalseCondition implements Condition {
+
+        private static final Condition INSTANCE = new FalseCondition();
+
+        private static Condition getInstance() {
+            return INSTANCE;
+        }
 
         @Override
         public Condition and(final boolean clause) {
@@ -163,7 +180,7 @@ public interface Condition {
         @Override
         public Condition or(final boolean secondClause) {
             if (secondClause) {
-                return new TrueCondition();
+                return TrueCondition.getInstance();
             }
             return this;
         }
