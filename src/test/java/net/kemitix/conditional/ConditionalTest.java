@@ -125,6 +125,16 @@ public class ConditionalTest {
     }
 
     @Test
+    public void whereNotTrueThenOtherwiseRuns() {
+        //when
+        Condition.whereNot(true)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+        //then
+        thenTheOtherwiseResponseRuns();
+    }
+
+    @Test
     public void whereTrueAndNotFalseThenRuns() {
         //when
         Condition.where(true)
@@ -135,6 +145,17 @@ public class ConditionalTest {
     }
 
     @Test
+    public void whereTrueAndNotTrueThenOtherwiseRuns() {
+        //when
+        Condition.where(true)
+                 .andNot(true)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+        //then
+        thenTheOtherwiseResponseRuns();
+    }
+
+    @Test
     public void whereFalseOrNotFalseThenRuns() {
         //when
         Condition.where(false)
@@ -142,6 +163,17 @@ public class ConditionalTest {
                  .then(thenResponse);
         //then
         thenTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereFalseOrNotTrueThenOtherwiseRuns() {
+        //when
+        Condition.where(false)
+                 .orNot(true)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+        //then
+        thenTheOtherwiseResponseRuns();
     }
 
     @Test
