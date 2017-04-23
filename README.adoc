@@ -1,8 +1,15 @@
 # Conditional
 
-If-then-else in a functional-style.
+image:https://travis-ci.org/kemitix/conditional.svg?branch=master["Build Status", link="https://travis-ci.org/kemitix/conditional"]
 
-## Usage
+image::https://coveralls.io/repos/github/kemitix/conditional/badge.svg?branch=master["Coverage Status", link="https://coveralls.io/github/kemitix/conditional?branch=master"]
+
+* link:#_condition[Condition]
+* link:#_value[Value]
+
+## Condition
+
+If-then-else in a functional-style.
 
 ### if-then
 
@@ -168,4 +175,127 @@ Condition.where(isTrue())
          .then(() -> doSomething())
          .and(isAlsoTrue())
          .then(() -> doSomethingElse());
+----
+
+## Value
+
+Values from an if-then-else in a functional-style.
+
+Functional, and verbose, alternative to the ternary operator (`?:`).
+
+### if-then-else
+
+[[source,java]]
+----
+String result;
+if (isTrue()) {
+    result = TRUE;
+} else {
+    result = FALSE;
+}
+----
+
+[[source,java]]
+----
+String result = isTrue() ? TRUE : FALSE;
+----
+
+[[source,java]]
+----
+final String result = Value.<String>where(isTrue()).then(() -> TRUE)
+                                                   .otherwise(() -> FALSE);
+----
+
+### if-not-then-else
+
+[[source,java]]
+----
+String result;
+if (!isTrue()) {
+    result = TRUE;
+} else {
+    result = FALSE;
+}
+----
+
+[[source,java]]
+----
+final String result = Value.<String>whereNot(isTrue()).then(() -> TRUE)
+                                                      .otherwise(() -> FALSE);
+----
+
+### if-and-then-else
+
+[[source,java]]
+----
+String result;
+if (isTrue() && alternativeIsTrue()) {
+    result = TRUE;
+} else {
+    result = FALSE;
+}
+----
+
+[[source,java]]
+----
+final String result = Value.<String>where(isTrue()).and(alternativeIsTrue())
+                                                   .then(() -> TRUE)
+                                                   .otherwise(() -> FALSE);
+----
+
+### if-and-not-then-else
+
+[[source,java]]
+----
+String result;
+if (isTrue() && !alternativeIsFalse()) {
+    result = TRUE;
+} else {
+    result = FALSE;
+}
+----
+
+[[source,java]]
+----
+final String result = Value.<String>where(isTrue()).andNot(alternativeIsFalse())
+                                                   .then(() -> TRUE)
+                                                   .otherwise(() -> FALSE);
+----
+
+### if-or-then-else
+
+[[source,java]]
+----
+String result;
+if (isTrue() || alternativeIsTrue()) {
+    result = TRUE;
+} else {
+    result = FALSE;
+}
+----
+
+[[source,java]]
+----
+final String result = Value.<String>where(isTrue()).or(alternativeIsTrue())
+                                                   .then(() -> TRUE)
+                                                   .otherwise(() -> FALSE);
+----
+
+### if-or-not-then-else
+
+[[source,java]]
+----
+String result;
+if (isTrue() || !isFalse()) {
+    result = TRUE;
+} else {
+    result = FALSE;
+}
+----
+
+[[source,java]]
+----
+final String result = Value.<String>where(isTrue()).orNot(isFalse())
+                                                   .then(() -> TRUE)
+                                                   .otherwise(() -> FALSE);
 ----

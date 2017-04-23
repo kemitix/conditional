@@ -125,6 +125,16 @@ public class ConditionalTest {
     }
 
     @Test
+    public void whereNotTrueThenOtherwiseRuns() {
+        //when
+        Condition.whereNot(true)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+        //then
+        thenTheOtherwiseResponseRuns();
+    }
+
+    @Test
     public void whereTrueAndNotFalseThenRuns() {
         //when
         Condition.where(true)
@@ -135,6 +145,17 @@ public class ConditionalTest {
     }
 
     @Test
+    public void whereTrueAndNotTrueThenOtherwiseRuns() {
+        //when
+        Condition.where(true)
+                 .andNot(true)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+        //then
+        thenTheOtherwiseResponseRuns();
+    }
+
+    @Test
     public void whereFalseOrNotFalseThenRuns() {
         //when
         Condition.where(false)
@@ -142,6 +163,17 @@ public class ConditionalTest {
                  .then(thenResponse);
         //then
         thenTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereFalseOrNotTrueThenOtherwiseRuns() {
+        //when
+        Condition.where(false)
+                 .orNot(true)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+        //then
+        thenTheOtherwiseResponseRuns();
     }
 
     @Test
@@ -166,6 +198,26 @@ public class ConditionalTest {
         thenNoResponseRuns();
     }
 
+    @Test
+    public void whereTrueChainedThensBothRuns() {
+        //when
+        Condition.where(true)
+                 .then(thenResponse)
+                 .then(otherwiseResponse);
+        //then
+        thenBothResponsesRun();
+    }
+
+    @Test
+    public void whereFalseChainedThensNothingRuns() {
+        //when
+        Condition.where(false)
+                 .then(thenResponse)
+                 .then(otherwiseResponse);
+        //then
+        thenNoResponseRuns();
+    }
+
     private void whenOr(final boolean firstClause, final boolean secondClause) {
         Condition.where(firstClause)
                  .or(secondClause)
@@ -180,23 +232,43 @@ public class ConditionalTest {
     }
 
     private void thenBothResponsesRun() {
-        assertThat(thenFlag).isTrue();
-        assertThat(otherwiseFlag).isTrue();
+        theThenResponseRan();
+        theOtherwiseResponseRan();
     }
 
     private void thenTheThenResponseRuns() {
-        assertThat(thenFlag).isTrue();
-        assertThat(otherwiseFlag).isFalse();
+        theThenResponseRan();
+        theOtherwiseResponseDidNotRun();
     }
 
     private void thenTheOtherwiseResponseRuns() {
-        assertThat(thenFlag).isFalse();
-        assertThat(otherwiseFlag).isTrue();
+        theThenResponseDidNotRun();
+        theOtherwiseResponseRan();
+    }
+
+    private void theOtherwiseResponseRan() {
+        assertThat(otherwiseFlag).as("otherwise response runs")
+                                 .isTrue();
+    }
+
+    private void theThenResponseRan() {
+        assertThat(thenFlag).as("then response runs")
+                            .isTrue();
+    }
+
+    private void theOtherwiseResponseDidNotRun() {
+        assertThat(otherwiseFlag).as("otherwise response does not run")
+                                 .isFalse();
+    }
+
+    private void theThenResponseDidNotRun() {
+        assertThat(thenFlag).as("then response does not run")
+                            .isFalse();
     }
 
     private void thenNoResponseRuns() {
-        assertThat(thenFlag).isFalse();
-        assertThat(otherwiseFlag).isFalse();
+        theThenResponseDidNotRun();
+        theOtherwiseResponseDidNotRun();
     }
 
     private void when(final boolean firstClause, final boolean secondClause) {

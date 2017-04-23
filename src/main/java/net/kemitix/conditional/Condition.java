@@ -21,8 +21,11 @@
 
 package net.kemitix.conditional;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * If-then-else in a functional-style.
@@ -30,6 +33,14 @@ import lombok.NoArgsConstructor;
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
 public interface Condition {
+
+    Condition TRUE = new TrueCondition();
+
+    Condition FALSE = new FalseCondition();
+
+    Map<Boolean, Condition> CONDITIONS = Collections.unmodifiableMap(
+            Stream.of(new SimpleEntry<>(true, TRUE), new SimpleEntry<>(false, FALSE))
+                  .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
     /**
      * Create a new {@code Condition} for the clause.
@@ -39,10 +50,7 @@ public interface Condition {
      * @return the Condition
      */
     static Condition where(final boolean clause) {
-        if (clause) {
-            return TrueCondition.getInstance();
-        }
-        return FalseCondition.getInstance();
+        return CONDITIONS.get(clause);
     }
 
     /**
@@ -52,7 +60,7 @@ public interface Condition {
      *
      * @return the Condition
      */
-    static Condition whereNot(boolean clause) {
+    static Condition whereNot(final boolean clause) {
         return where(!clause);
     }
 
@@ -72,7 +80,7 @@ public interface Condition {
      *
      * @return the Condition
      */
-    default Condition andNot(boolean clause) {
+    default Condition andNot(final boolean clause) {
         return and(!clause);
     }
 
@@ -92,7 +100,7 @@ public interface Condition {
      *
      * @return the Condition
      */
-    default Condition orNot(boolean clause) {
+    default Condition orNot(final boolean clause) {
         return or(!clause);
     }
 
@@ -119,39 +127,29 @@ public interface Condition {
      *
      * @return the Condition
      */
-    default Condition otherwise(boolean clause) {
+    default Condition otherwise(final boolean clause) {
         return where(clause);
     }
 
     /**
      * A {@code Condition} that has evaluated to {@code true}.
      */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     class TrueCondition implements Condition {
-
-        private static final Condition INSTANCE = new TrueCondition();
-
-        private static Condition getInstance() {
-            return INSTANCE;
-        }
 
         @Override
         public Condition and(final boolean clause) {
-            if (clause) {
-                return this;
-            }
-            return FalseCondition.getInstance();
+            return where(clause);
         }
 
         @Override
         public Condition or(final boolean secondClause) {
-            return this;
+            return TRUE;
         }
 
         @Override
         public Condition then(final Runnable response) {
             response.run();
-            return this;
+            return TRUE;
         }
 
         @Override
@@ -163,31 +161,21 @@ public interface Condition {
     /**
      * A {@code Condition} that has evaluated to {@code false}.
      */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     class FalseCondition implements Condition {
-
-        private static final Condition INSTANCE = new FalseCondition();
-
-        private static Condition getInstance() {
-            return INSTANCE;
-        }
 
         @Override
         public Condition and(final boolean clause) {
-            return this;
+            return FALSE;
         }
 
         @Override
         public Condition or(final boolean secondClause) {
-            if (secondClause) {
-                return TrueCondition.getInstance();
-            }
-            return this;
+            return where(secondClause);
         }
 
         @Override
         public Condition then(final Runnable response) {
-            return this;
+            return FALSE;
         }
 
         @Override
