@@ -16,8 +16,8 @@ public class ValueTest {
     @Test
     public void valueWhereTrueIsTrue() {
         //when
-        final String result = Value.<String>where(true).then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+        final String result = Value.<String>where(true).then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -25,8 +25,8 @@ public class ValueTest {
     @Test
     public void valueWhereFalseIsFalse() {
         //when
-        final String result = Value.<String>where(false).then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+        final String result = Value.<String>where(false).then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -35,8 +35,8 @@ public class ValueTest {
     public void valueWhereTrueAndTrueIsTrue() {
         //when
         final String result = Value.<String>where(true).and(true)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -45,8 +45,8 @@ public class ValueTest {
     public void valueWhereTrueAndFalseIsFalse() {
         //when
         final String result = Value.<String>where(true).and(false)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -55,8 +55,8 @@ public class ValueTest {
     public void valueWhereFalseAndTrueIsFalse() {
         //when
         final String result = Value.<String>where(false).and(true)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -65,8 +65,8 @@ public class ValueTest {
     public void valueWhereFalseAndFalseIsFalse() {
         //when
         final String result = Value.<String>where(false).and(false)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -75,8 +75,8 @@ public class ValueTest {
     public void valueWhereTrueOrTrueIsTrue() {
         //when
         final String result = Value.<String>where(true).or(true)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -85,8 +85,8 @@ public class ValueTest {
     public void valueWhereTrueOrFalseIsTrue() {
         //when
         final String result = Value.<String>where(true).or(false)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -95,8 +95,8 @@ public class ValueTest {
     public void valueWhereFalseOrTrueIsTrue() {
         //when
         final String result = Value.<String>where(false).or(true)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -105,8 +105,8 @@ public class ValueTest {
     public void valueWhereFalseOrFalseIsFalse() {
         //when
         final String result = Value.<String>where(false).or(false)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -114,8 +114,8 @@ public class ValueTest {
     @Test
     public void valueWhereNotTrueIsFalse() {
         //when
-        final String result = Value.<String>whereNot(true).then(this::isTrue)
-                                                          .otherwise(this::isFalse);
+        final String result = Value.<String>whereNot(true).then(() -> TRUE)
+                                                          .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -123,8 +123,8 @@ public class ValueTest {
     @Test
     public void valueWhereNotFalseIsTrue() {
         //when
-        final String result = Value.<String>whereNot(false).then(this::isTrue)
-                                                           .otherwise(this::isFalse);
+        final String result = Value.<String>whereNot(false).then(() -> TRUE)
+                                                           .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -133,8 +133,8 @@ public class ValueTest {
     public void valueWhereTrueAndNotTrueIsFalse() {
         //when
         final String result = Value.<String>where(true).andNot(true)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -143,8 +143,8 @@ public class ValueTest {
     public void valueWhereTrueAndNotFalseIsTrue() {
         //when
         final String result = Value.<String>where(true).andNot(false)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -153,8 +153,8 @@ public class ValueTest {
     public void valueWhereFalseAndNotTrueIsFalse() {
         //when
         final String result = Value.<String>where(false).andNot(true)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -163,8 +163,8 @@ public class ValueTest {
     public void valueWhereFalseAndNotFalseIsFalse() {
         //when
         final String result = Value.<String>where(false).andNot(false)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -173,8 +173,8 @@ public class ValueTest {
     public void valueWhereTrueOrNotTrueIsTrue() {
         //when
         final String result = Value.<String>where(true).orNot(true)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -183,8 +183,8 @@ public class ValueTest {
     public void valueWhereTrueOrNotFalseIsTrue() {
         //when
         final String result = Value.<String>where(true).orNot(false)
-                                                       .then(this::isTrue)
-                                                       .otherwise(this::isFalse);
+                                                       .then(() -> TRUE)
+                                                       .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
@@ -193,8 +193,8 @@ public class ValueTest {
     public void valueWhereFalseOrNotTrueIsFalse() {
         //when
         final String result = Value.<String>where(false).orNot(true)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsFalse(result);
     }
@@ -203,22 +203,14 @@ public class ValueTest {
     public void valueWhereFalseOrNotFalseIsTrue() {
         //when
         final String result = Value.<String>where(false).orNot(false)
-                                                        .then(this::isTrue)
-                                                        .otherwise(this::isFalse);
+                                                        .then(() -> TRUE)
+                                                        .otherwise(() -> FALSE);
         //then
         thenIsTrue(result);
     }
 
-    private String isTrue() {
-        return TRUE;
-    }
-
-    private String isFalse() {
-        return FALSE;
-    }
-
     private void thenIsFalse(final String result) {
-        assertThat(result).isEqualTo(isFalse());
+        assertThat(result).isEqualTo(FALSE);
     }
 
     private void thenIsTrue(final String result) {
