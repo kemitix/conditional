@@ -26,11 +26,9 @@ import java.util.function.Supplier;
 /**
  * A Value from an if-then-else in a functional-style.
  *
- * @param <T> the type of the value
- *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
-public interface Value<T> {
+public interface Value {
 
     /**
      * Create a new {@link ValueClause} for the clause.
@@ -144,12 +142,12 @@ public interface Value<T> {
 
         @Override
         public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
-            return new TrueValueSupplier<T>(trueSupplier);
+            return new TrueValueSupplier(trueSupplier);
         }
 
         @Override
         public ValueClause<T> and(final boolean clause) {
-            return Value.<T>where(clause);
+            return Value.where(clause);
         }
 
         @Override
@@ -159,10 +157,8 @@ public interface Value<T> {
 
         /**
          * An intermediate result of the {@link Value} where the clause has evaluated to true.
-         *
-         * @param <T> the type of the value
          */
-        private class TrueValueSupplier<T> implements ValueSupplier<T> {
+        private class TrueValueSupplier implements ValueSupplier<T> {
 
             private final Supplier<T> valueSupplier;
 
@@ -188,7 +184,7 @@ public interface Value<T> {
 
         @Override
         public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
-            return new FalseValueSupplier<T>();
+            return new FalseValueSupplier();
         }
 
         @Override
@@ -198,15 +194,13 @@ public interface Value<T> {
 
         @Override
         public ValueClause<T> or(final boolean clause) {
-            return Value.<T>where(clause);
+            return Value.where(clause);
         }
 
         /**
          * An intermediate result of the {@link Value} where the clause has evaluated to false.
-         *
-         * @param <T> the type of the value
          */
-        private class FalseValueSupplier<T> implements ValueSupplier<T> {
+        private class FalseValueSupplier implements ValueSupplier<T> {
 
             @Override
             public T otherwise(final Supplier<T> falseSupplier) {
