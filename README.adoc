@@ -1,11 +1,13 @@
 # Conditional
 
+image:https://img.shields.io/github/release/kemitix/conditional.svg[]
+
 image:https://travis-ci.org/kemitix/conditional.svg?branch=master["Build Status", link="https://travis-ci.org/kemitix/conditional"]
 
-image::https://coveralls.io/repos/github/kemitix/conditional/badge.svg?branch=master["Coverage Status", link="https://coveralls.io/github/kemitix/conditional?branch=master"]
+image:https://coveralls.io/repos/github/kemitix/conditional/badge.svg?branch=master["Coverage Status", link="https://coveralls.io/github/kemitix/conditional?branch=master"]
 
-* link:#_condition[Condition]
-* link:#_value[Value]
+* link:#condition[Condition]
+* link:#value[Value]
 
 ## Condition
 
