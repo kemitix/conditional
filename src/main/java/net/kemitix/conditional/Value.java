@@ -21,6 +21,8 @@
 
 package net.kemitix.conditional;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.function.Supplier;
 
 /**
@@ -158,13 +160,10 @@ public interface Value {
         /**
          * An intermediate result of the {@link Value} where the clause has evaluated to true.
          */
+        @RequiredArgsConstructor
         private class TrueValueSupplier implements ValueSupplier<T> {
 
             private final Supplier<T> valueSupplier;
-
-            TrueValueSupplier(final Supplier<T> valueSupplier) {
-                this.valueSupplier = valueSupplier;
-            }
 
             @Override
             public T otherwise(final Supplier<T> falseSupplier) {
