@@ -23,7 +23,12 @@ package net.kemitix.conditional;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Collections;
+import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A Value from an if-then-else in a functional-style.
@@ -31,6 +36,14 @@ import java.util.function.Supplier;
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
 public interface Value {
+
+    ValueClause TRUE = new TrueValueClause();
+
+    ValueClause FALSE = new FalseValueClause();
+
+    Map<Boolean, ValueClause> VALUE_CLAUSES = Collections.unmodifiableMap(
+            Stream.of(new SimpleEntry<>(true, TRUE), new SimpleEntry<>(false, FALSE))
+                  .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
     /**
      * Create a new {@link ValueClause} for the clause.
@@ -40,11 +53,9 @@ public interface Value {
      *
      * @return a true or false value clause
      */
+    @SuppressWarnings("unchecked")
     static <T> ValueClause<T> where(final boolean clause) {
-        if (clause) {
-            return new TrueValueClause<>();
-        }
-        return new FalseValueClause<>();
+        return (ValueClause<T>) VALUE_CLAUSES.get(clause);
     }
 
     /**
