@@ -26,7 +26,7 @@ package net.kemitix.conditional;
  *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
-public final class TrueCondition implements Condition {
+final class TrueCondition implements Condition {
 
     protected static final Condition TRUE = new net.kemitix.conditional.TrueCondition();
 

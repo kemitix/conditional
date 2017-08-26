@@ -21,33 +21,44 @@
 
 package net.kemitix.conditional;
 
+import java.util.function.Supplier;
+
 /**
- * A {@code Condition} that has evaluated to {@code false}.
+ * An intermediate state where the clause has evaluated to false.
+ *
+ * @param <T> the type of the value
  *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
-final class FalseCondition implements Condition {
+class FalseValueClause<T> implements Value.ValueClause<T> {
 
-    protected static final Condition FALSE = new net.kemitix.conditional.FalseCondition();
+    protected static final Value.ValueClause FALSE = new FalseValueClause();
 
     @Override
-    public Condition and(final boolean clause) {
-        return FALSE;
+    public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
+        return new FalseValueSupplier();
     }
 
     @Override
-    public Condition or(final boolean secondClause) {
-        return Condition.where(secondClause);
+    public Value.ValueClause<T> and(final boolean clause) {
+        return this;
     }
 
     @Override
-    public Condition then(final Runnable response) {
-        return FALSE;
+    public Value.ValueClause<T> or(final boolean clause) {
+        return Value.where(clause);
     }
 
-    @Override
-    public void otherwise(final Runnable response) {
-        response.run();
+    /**
+     * An intermediate result of the {@link Value} where the clause has evaluated to false.
+     */
+    private class FalseValueSupplier implements ValueSupplier<T> {
+
+        @Override
+        public T otherwise(final Supplier<T> falseSupplier) {
+            return falseSupplier.get();
+        }
+
     }
 
 }

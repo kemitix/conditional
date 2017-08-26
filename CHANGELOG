@@ -5,6 +5,7 @@ CHANGELOG
 -----
 
 * Add `.travis-support`
+* Avoid danger of JVM-level deadlock during `Value` initialisation
 * Avoid danger of JVM-level deadlock during `Condition` initialisation
 * Upgrade `kemitix-parent` to 3.2.0
 * Upgrade `kemitix-checkstyle-parent` to 3.2.0
