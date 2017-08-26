@@ -1,9 +1,8 @@
 # Conditional
 
 image:https://img.shields.io/github/release/kemitix/conditional.svg[]
-
+image:https://api.codacy.com/project/badge/Grade/1188742d676e457da91415d2b3a5faf1["Codacy code quality", link="https://www.codacy.com/app/kemitix/conditional?utm_source=github.com&utm_medium=referral&utm_content=kemitix/conditional&utm_campaign=Badge_Grade"]
 image:https://travis-ci.org/kemitix/conditional.svg?branch=master["Build Status", link="https://travis-ci.org/kemitix/conditional"]
-
 image:https://coveralls.io/repos/github/kemitix/conditional/badge.svg?branch=master["Coverage Status", link="https://coveralls.io/github/kemitix/conditional?branch=master"]
 
 * link:#condition[Condition]
