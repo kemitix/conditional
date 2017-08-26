@@ -203,6 +203,16 @@ String result = isTrue() ? TRUE : FALSE;
 
 [[source,java]]
 ----
+final String result = Value.where(isTrue(), () -> TRUE, () -> FALSE);
+----
+
+[[source,java]]
+----
+final Optional<String> result = Value.where(isTrue(), () -> TRUE);
+----
+
+[[source,java]]
+----
 final String result = Value.<String>where(isTrue()).then(() -> TRUE)
                                                    .otherwise(() -> FALSE);
 ----

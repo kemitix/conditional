@@ -21,6 +21,7 @@
 
 package net.kemitix.conditional;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -53,6 +54,22 @@ public interface Value {
      */
     static <T> ValueClause<T> whereNot(boolean clause) {
         return where(!clause);
+    }
+
+    static <T> T where(
+            boolean clause,
+            Supplier<T> trueSupplier,
+            Supplier<T> falseSupplier
+                      ) {
+        return Value.<T>where(clause).then(trueSupplier)
+                                     .otherwise(falseSupplier);
+    }
+
+    static <T> Optional<T> where(
+            boolean clause,
+            Supplier<T> trueSupplier
+                                ) {
+        return Optional.ofNullable(Value.where(clause, trueSupplier, () -> null));
     }
 
     /**

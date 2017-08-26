@@ -3,6 +3,8 @@ package net.kemitix.conditional;
 import lombok.val;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -15,7 +17,39 @@ public class ValueTest {
     private static final String FALSE = "false";
 
     @Test
-    public void valueWhereTrueIsTrue() {
+    public void valueWhereClauseIsTrueTypeSafe() {
+        //when
+        final String result = Value.where(true, () -> TRUE, () -> FALSE);
+        //then
+        assertThat(result).isEqualTo(TRUE);
+    }
+
+    @Test
+    public void valueWhereClauseIsFalseTypeSafe() {
+        //when
+        final String result = Value.where(false, () -> TRUE, () -> FALSE);
+        //then
+        assertThat(result).isEqualTo(FALSE);
+    }
+
+    @Test
+    public void valueWhereClauseIsTrueIsOptional() {
+        //when
+        final Optional<String> result = Value.where(true, () -> TRUE);
+        //then
+        assertThat(result).contains(TRUE);
+    }
+
+    @Test
+    public void valueWhereClauseIsFalseIsEmptyOptional() {
+        //when
+        final Optional<String> result = Value.where(false, () -> TRUE);
+        //then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void valueWhereClauseIsTrue() {
         //when
         val result = Value.<String>where(true).then(() -> TRUE)
                                               .otherwise(() -> FALSE);
@@ -24,7 +58,7 @@ public class ValueTest {
     }
 
     @Test
-    public void valueWhereFalseIsFalse() {
+    public void valueWhereClauseIsFalse() {
         //when
         val result = Value.<String>where(false).then(() -> TRUE)
                                                .otherwise(() -> FALSE);

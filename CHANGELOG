@@ -4,6 +4,8 @@ CHANGELOG
 0.3.0
 -----
 
+* Add `<T> Value.where(boolean, Supplier<T>, Supplier<T>)`
+* Add `Optional<T> Value.where(boolean, Supplier<T>)`
 * Add `.travis-support`
 * Avoid danger of JVM-level deadlock during `Value` initialisation
 * Avoid danger of JVM-level deadlock during `Condition` initialisation
