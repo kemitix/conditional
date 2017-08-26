@@ -1,0 +1,23 @@
+CHANGELOG
+=========
+
+0.3.0
+-----
+
+* Upgrade `kemitix-parent` to 3.2.0
+* Upgrade `kemitix-checkstyle-parent` to 3.2.0
+* Upgrade `assertj` to 3.8.0
+* Set `jacoco` to 100% line and instruction coverage required
+* Set `pitest` to 100% mutation and coverage required
+* Use `lombok.val` in `ValueTest`
+* Move `assertThat` calls to individual test methods in `ValueTest`
+
+0.2.0
+-----
+
+* Added `Value`
+
+0.1.0
+-----
+
+* Initial release
