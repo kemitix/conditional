@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <kemitix-checkstyle-ruleset.version>2.3.0</kemitix-checkstyle-ruleset.version>
+        <kemitix-checkstyle-ruleset.version>3.2.0</kemitix-checkstyle-ruleset.version>
         <kemitix-checkstyle-ruleset.level>5-complexity</kemitix-checkstyle-ruleset.level>
         <junit.version>4.12</junit.version>
         <assertj.version>3.6.2</assertj.version>
@@ -14,7 +14,7 @@
     <parent>
     <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-        <version>2.7.0</version>
+        <version>3.2.0</version>
         <relativePath/>
     </parent>
     <artifactId>conditional</artifactId>
@@ -41,11 +41,14 @@
                 <groupId>net.kemitix</groupId>
                 <artifactId>kemitix-checkstyle-ruleset-maven-plugin</artifactId>
                 <version>${kemitix-checkstyle-ruleset.version}</version>
+                <configuration>
+                    <level>${kemitix-checkstyle-ruleset.level}</level>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>validate</phase>
                         <goals>
-                            <goal>${kemitix-checkstyle-ruleset.level}</goal>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -57,12 +60,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sevntu-maven</id>
-            <name>sevntu-maven</name>
-            <url>http://sevntu-checkstyle.github.io/sevntu.checkstyle/maven2</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
