@@ -218,19 +218,6 @@ public class ConditionalTest {
         assertThatNoResponseRuns();
     }
 
-    private void whenOr(final boolean firstClause, final boolean secondClause) {
-        Condition.where(firstClause)
-                 .or(secondClause)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
-    }
-
-    private void when(final boolean clause) {
-        Condition.where(clause)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
-    }
-
     private void assertThatBothResponsesRun() {
         assertThatTheThenResponseRan();
         assertThatTheOtherwiseResponseRan();
@@ -271,11 +258,29 @@ public class ConditionalTest {
         assertThatTheOtherwiseResponseDidNotRun();
     }
 
-    private void when(final boolean firstClause, final boolean secondClause) {
+    private void when(final boolean clause) {
+        Condition.where(clause)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+    }
+
+    private void when(
+            final boolean firstClause,
+            final boolean secondClause
+                     ) {
         Condition.where(firstClause)
                  .and(secondClause)
                  .then(thenResponse)
                  .otherwise(otherwiseResponse);
     }
 
+    private void whenOr(
+            final boolean firstClause,
+            final boolean secondClause
+                       ) {
+        Condition.where(firstClause)
+                 .or(secondClause)
+                 .then(thenResponse)
+                 .otherwise(otherwiseResponse);
+    }
 }
