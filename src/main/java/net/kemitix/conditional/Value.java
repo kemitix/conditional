@@ -32,6 +32,41 @@ import java.util.function.Supplier;
 public interface Value {
 
     /**
+     * Return one of two values depending on the value of a clause.
+     *
+     * @param clause        The deciding clause
+     * @param trueSupplier  The supplier to provide the value when the clause is true
+     * @param falseSupplier The supplier to provide the value when the clause is false
+     * @param <T>           The type of the value
+     *
+     * @return the value from either the trueSupplier or the falseSupplier
+     */
+    static <T> T where(
+            boolean clause,
+            Supplier<T> trueSupplier,
+            Supplier<T> falseSupplier
+                      ) {
+        return Value.<T>where(clause).then(trueSupplier)
+                                     .otherwise(falseSupplier);
+    }
+
+    /**
+     * Return an Optional either containing a value, if the clause is true, or empty.
+     *
+     * @param clause        The deciding clause
+     * @param trueSupplier  The supplier to provide the value when the clause is true
+     * @param <T>           The type of the value
+     *
+     * @return an Optional either containing the value from the trueSupplier or empty
+     */
+    static <T> Optional<T> where(
+            boolean clause,
+            Supplier<T> trueSupplier
+                                ) {
+        return Optional.ofNullable(Value.where(clause, trueSupplier, () -> null));
+    }
+
+    /**
      * Create a new {@link ValueClause} for the clause.
      *
      * @param clause the condition to test
@@ -54,22 +89,6 @@ public interface Value {
      */
     static <T> ValueClause<T> whereNot(boolean clause) {
         return where(!clause);
-    }
-
-    static <T> T where(
-            boolean clause,
-            Supplier<T> trueSupplier,
-            Supplier<T> falseSupplier
-                      ) {
-        return Value.<T>where(clause).then(trueSupplier)
-                                     .otherwise(falseSupplier);
-    }
-
-    static <T> Optional<T> where(
-            boolean clause,
-            Supplier<T> trueSupplier
-                                ) {
-        return Optional.ofNullable(Value.where(clause, trueSupplier, () -> null));
     }
 
     /**
