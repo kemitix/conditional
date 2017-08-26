@@ -21,26 +21,12 @@
 
 package net.kemitix.conditional;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Collections;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * If-then-else in a functional-style.
  *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
 public interface Condition {
-
-    Condition TRUE = new TrueCondition();
-
-    Condition FALSE = new FalseCondition();
-
-    Map<Boolean, Condition> CONDITIONS = Collections.unmodifiableMap(
-            Stream.of(new SimpleEntry<>(true, TRUE), new SimpleEntry<>(false, FALSE))
-                  .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
     /**
      * Create a new {@code Condition} for the clause.
@@ -49,8 +35,9 @@ public interface Condition {
      *
      * @return the Condition
      */
+    @SuppressWarnings("avoidinlineconditionals")
     static Condition where(final boolean clause) {
-        return CONDITIONS.get(clause);
+        return clause ? TrueCondition.TRUE : FalseCondition.FALSE;
     }
 
     /**
@@ -129,60 +116,6 @@ public interface Condition {
      */
     default Condition otherwise(final boolean clause) {
         return where(clause);
-    }
-
-    /**
-     * A {@code Condition} that has evaluated to {@code true}.
-     */
-    class TrueCondition implements Condition {
-
-        @Override
-        public Condition and(final boolean clause) {
-            return where(clause);
-        }
-
-        @Override
-        public Condition or(final boolean secondClause) {
-            return TRUE;
-        }
-
-        @Override
-        public Condition then(final Runnable response) {
-            response.run();
-            return TRUE;
-        }
-
-        @Override
-        public void otherwise(final Runnable response) {
-        }
-
-    }
-
-    /**
-     * A {@code Condition} that has evaluated to {@code false}.
-     */
-    class FalseCondition implements Condition {
-
-        @Override
-        public Condition and(final boolean clause) {
-            return FALSE;
-        }
-
-        @Override
-        public Condition or(final boolean secondClause) {
-            return where(secondClause);
-        }
-
-        @Override
-        public Condition then(final Runnable response) {
-            return FALSE;
-        }
-
-        @Override
-        public void otherwise(final Runnable response) {
-            response.run();
-        }
-
     }
 
 }

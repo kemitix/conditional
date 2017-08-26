@@ -21,6 +21,7 @@
 
 package net.kemitix.conditional;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -31,6 +32,41 @@ import java.util.function.Supplier;
 public interface Value {
 
     /**
+     * Return one of two values depending on the value of a clause.
+     *
+     * @param clause        The deciding clause
+     * @param trueSupplier  The supplier to provide the value when the clause is true
+     * @param falseSupplier The supplier to provide the value when the clause is false
+     * @param <T>           The type of the value
+     *
+     * @return the value from either the trueSupplier or the falseSupplier
+     */
+    static <T> T where(
+            boolean clause,
+            Supplier<T> trueSupplier,
+            Supplier<T> falseSupplier
+                      ) {
+        return Value.<T>where(clause).then(trueSupplier)
+                                     .otherwise(falseSupplier);
+    }
+
+    /**
+     * Return an Optional either containing a value, if the clause is true, or empty.
+     *
+     * @param clause        The deciding clause
+     * @param trueSupplier  The supplier to provide the value when the clause is true
+     * @param <T>           The type of the value
+     *
+     * @return an Optional either containing the value from the trueSupplier or empty
+     */
+    static <T> Optional<T> where(
+            boolean clause,
+            Supplier<T> trueSupplier
+                                ) {
+        return Optional.ofNullable(Value.where(clause, trueSupplier, () -> null));
+    }
+
+    /**
      * Create a new {@link ValueClause} for the clause.
      *
      * @param clause the condition to test
@@ -38,11 +74,9 @@ public interface Value {
      *
      * @return a true or false value clause
      */
+    @SuppressWarnings({"unchecked", "avoidinlineconditionals"})
     static <T> ValueClause<T> where(final boolean clause) {
-        if (clause) {
-            return new TrueValueClause<>();
-        }
-        return new FalseValueClause<>();
+        return (ValueClause<T>) (clause ? TrueValueClause.TRUE : FalseValueClause.FALSE);
     }
 
     /**
@@ -128,84 +162,6 @@ public interface Value {
              * @return the value
              */
             T otherwise(Supplier<T> falseSupplier);
-
-        }
-
-    }
-
-    /**
-     * An intermediate state where the clause has evaluated to true.
-     *
-     * @param <T> the type of the value
-     */
-    class TrueValueClause<T> implements ValueClause<T> {
-
-        @Override
-        public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
-            return new TrueValueSupplier(trueSupplier);
-        }
-
-        @Override
-        public ValueClause<T> and(final boolean clause) {
-            return Value.where(clause);
-        }
-
-        @Override
-        public ValueClause<T> or(final boolean clause) {
-            return this;
-        }
-
-        /**
-         * An intermediate result of the {@link Value} where the clause has evaluated to true.
-         */
-        private class TrueValueSupplier implements ValueSupplier<T> {
-
-            private final Supplier<T> valueSupplier;
-
-            TrueValueSupplier(final Supplier<T> valueSupplier) {
-                this.valueSupplier = valueSupplier;
-            }
-
-            @Override
-            public T otherwise(final Supplier<T> falseSupplier) {
-                return valueSupplier.get();
-            }
-
-        }
-
-    }
-
-    /**
-     * An intermediate state where the clause has evaluated to false.
-     *
-     * @param <T> the type of the value
-     */
-    class FalseValueClause<T> implements ValueClause<T> {
-
-        @Override
-        public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
-            return new FalseValueSupplier();
-        }
-
-        @Override
-        public ValueClause<T> and(final boolean clause) {
-            return this;
-        }
-
-        @Override
-        public ValueClause<T> or(final boolean clause) {
-            return Value.where(clause);
-        }
-
-        /**
-         * An intermediate result of the {@link Value} where the clause has evaluated to false.
-         */
-        private class FalseValueSupplier implements ValueSupplier<T> {
-
-            @Override
-            public T otherwise(final Supplier<T> falseSupplier) {
-                return falseSupplier.get();
-            }
 
         }
 
