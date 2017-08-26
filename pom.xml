@@ -7,7 +7,7 @@
         <kemitix-checkstyle-ruleset.version>3.2.0</kemitix-checkstyle-ruleset.version>
         <kemitix-checkstyle-ruleset.level>5-complexity</kemitix-checkstyle-ruleset.level>
         <junit.version>4.12</junit.version>
-        <assertj.version>3.6.2</assertj.version>
+        <assertj.version>3.8.0</assertj.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     </properties>
 
