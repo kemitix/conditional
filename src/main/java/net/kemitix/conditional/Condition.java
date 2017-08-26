@@ -154,6 +154,7 @@ public interface Condition {
 
         @Override
         public void otherwise(final Runnable response) {
+            // do nothing
         }
 
     }
