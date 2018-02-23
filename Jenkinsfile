@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'GPG_TTY="$(tty)" ./mvnw -Dskip-Tests=true -P release -B deploy'
+                sh './mvnw -Dskip-Tests=true -P release -B deploy'
             }
         }
     }
