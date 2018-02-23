@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh './mvnw -Dskip-Tests=true -P release -B deploy'
+                sh './mvnw -Dskip-Tests=true -P release -B org.kohsuke:pgp-maven-plugin:sign'
             }
         }
     }
