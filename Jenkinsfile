@@ -16,8 +16,8 @@ pipeline {
         }
         stage('Publish Coverage') {
             steps {
-                sh './mvnw test jacoco:report coveralls:report'
                 sh 'bash <(curl -s https://codecov.io/bash)'
+                sh './mvnw test jacoco:report coveralls:report'
             }
         }
         stage('Deploy') {
