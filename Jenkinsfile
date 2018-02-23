@@ -14,12 +14,6 @@ pipeline {
                 archiveArtifacts '**/target/*.jar'
             }
         }
-        stage('Publish Coverage') {
-            steps {
-                sh 'curl -s https://codecov.io/bash | bash -s - -t ${CODECOV_REPO_TOKEN} || echo "Codecov did not collect coverage reports"'
-                sh './mvnw test jacoco:report coveralls:report'
-            }
-        }
         stage('Deploy') {
             steps {
                 sh './mvnw -Dskip-Tests=true -P release -B deploy'
