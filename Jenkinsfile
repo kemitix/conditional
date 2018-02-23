@@ -14,5 +14,16 @@ pipeline {
                 archiveArtifacts '**/target/*.jar'
             }
         }
+        stage('Publish Coverage') {
+            steps {
+                sh './mvnw test jacoco:report coveralls:report'
+                sh 'bash <(curl -s https://codecov.io/bash)'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh './mvnw -Dskip-Tests=true -P release -B deploy'
+            }
+        }
     }
 }
