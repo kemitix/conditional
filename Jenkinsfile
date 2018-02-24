@@ -15,6 +15,11 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when {
+                expression {
+                    env.GIT_BRANCH === 'master'
+                }
+            }
             steps {
                 sh './mvnw -B -Dskip-Tests=true -P release deploy'
             }
