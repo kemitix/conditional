@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Prepare') {
             steps {
                 checkout([
                     $class: 'GitSCM',
@@ -9,7 +9,15 @@ pipeline {
                     extensions: [[$class: 'CleanBeforeCheckout']],
                     userRemoteConfigs: [[credentialsId: 'github-kemitix', url: 'git@github.com:kemitix/conditional.git']]
                 ])
+            }
+        }
+        stage('Build') {
+            steps {
                 sh './mvnw -B -U clean install'
+            }
+        }
+        stage('Reporting') {
+            steps {
                 junit '**/target/surefire-reports/*.xml'
                 archiveArtifacts '**/target/*.jar'
             }
