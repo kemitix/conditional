@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh './mvnw -Dskip-Tests=true -P release -B org.kohsuke:pgp-maven-plugin:sign'
+                sh './mvnw -Dskip-Tests=true -P release -B org.kohsuke:pgp-maven-plugin:sign -Dpgp.secretkey=6F626C45D8B32894'
             }
         }
     }
