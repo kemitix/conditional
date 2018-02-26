@@ -1,35 +1,32 @@
+def maven(goals, modules, profiles) {
+    withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+        sh "mvn -U $profiles $modules $goals"
+    }
+}
+
+def isBranch(branch) {
+    return env.GIT_BRANCH == branch
+}
+
 pipeline {
     agent any
     stages {
         stage('Prepare') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '**']],
-                    extensions: [[$class: 'CleanBeforeCheckout']],
-                    userRemoteConfigs: [[credentialsId: 'github-kemitix', url: 'git@github.com:kemitix/conditional.git']]
-                ])
+                git url: 'git@github.com:kemitix/condition.git',
+                        branch: '**',
+                        credentialsId: 'github-kemitix'
             }
         }
         stage('Build') {
             steps {
-                sh './mvnw -B -U clean install'
-            }
-        }
-        stage('Reporting') {
-            steps {
-                junit '**/target/surefire-reports/*.xml'
-                archiveArtifacts '**/target/*.jar'
+                maven("clean install", ".", "")
             }
         }
         stage('Deploy') {
-            when {
-                expression {
-                    env.GIT_BRANCH == 'master'
-                }
-            }
+            when { expression { isBranch 'master' } }
             steps {
-                sh './mvnw -B -Dskip-Tests=true -P release deploy'
+                maven("deploy", allModules, "-P release")
             }
         }
     }
