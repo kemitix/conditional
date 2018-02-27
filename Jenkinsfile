@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                git url: 'git@github.com:kemitix/condition.git',
+                git url: 'git@github.com:kemitix/conditional.git',
                         branch: '**',
                         credentialsId: 'github-kemitix'
             }
