@@ -3,33 +3,24 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '**']],
-                    extensions: [[$class: 'CleanBeforeCheckout']],
-                    userRemoteConfigs: [[credentialsId: 'github-kemitix', url: 'git@github.com:kemitix/conditional.git']]
-                ])
+                git url: 'git@github.com:kemitix/conditional.git',
+                        branch: '**',
+                        credentialsId: 'github-kemitix'
             }
         }
         stage('Build') {
             steps {
-                sh './mvnw -B -U clean install'
-            }
-        }
-        stage('Reporting') {
-            steps {
-                junit '**/target/surefire-reports/*.xml'
-                archiveArtifacts '**/target/*.jar'
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "mvn -B -U clean install"
+                }
             }
         }
         stage('Deploy') {
-            when {
-                expression {
-                    env.GIT_BRANCH == 'master'
-                }
-            }
+            when { expression { (env.GIT_BRANCH == 'master') } }
             steps {
-                sh './mvnw -B -Dskip-Tests=true -P release deploy'
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "mvn -B -U -P release deploy"
+                }
             }
         }
     }
