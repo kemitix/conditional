@@ -1,13 +1,3 @@
-def maven(goals, modules, profiles) {
-    withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
-        sh "mvn -U $profiles $modules $goals"
-    }
-}
-
-def isBranch(branch) {
-    return env.GIT_BRANCH == branch
-}
-
 pipeline {
     agent any
     stages {
@@ -20,13 +10,17 @@ pipeline {
         }
         stage('Build') {
             steps {
-                maven("clean install", ".", "")
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "mvn -B -U clean install"
+                }
             }
         }
         stage('Deploy') {
-            when { expression { isBranch 'master' } }
+            when { expression { (env.GIT_BRANCH == 'master') } }
             steps {
-                maven("deploy", allModules, "-P release")
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "mvn -B -U -P release deploy"
+                }
             }
         }
     }
