@@ -58,7 +58,7 @@ pipeline {
         stage('Deploy') {
             when { expression { (env.GIT_BRANCH == 'master') } }
             steps {
-                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 9') {
                     sh "${mvn} deploy --activate-profiles release -DskipTests=true"
                 }
             }
