@@ -1,4 +1,4 @@
-final String repoName = "mon"
+final String repoName = "conditional"
 final String repoUrl = "git@github.com:kemitix/${repoName}.git"
 final String mvn = "mvn --batch-mode --update-snapshots"
 
