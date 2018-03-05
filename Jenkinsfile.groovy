@@ -1,15 +1,8 @@
-final String repoName = "conditional"
-final String repoUrl = "git@github.com:kemitix/${repoName}.git"
 final String mvn = "mvn --batch-mode --update-snapshots"
 
 pipeline {
     agent any
     stages {
-        stage('Prepare') {
-            steps {
-                git url: repoUrl, branch: '**', credentialsId: 'github-kemitix'
-            }
-        }
         stage('no SNAPSHOT in master') {
             // checks that the pom version is not a snapshot when the current branch is master
             // TODO: also check for SNAPSHOT when is a pull request with master as the target branch
