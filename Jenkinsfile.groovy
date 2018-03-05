@@ -43,9 +43,25 @@ pipeline {
                 archiveArtifacts '**/target/*.jar'
             }
         }
-        stage('Coverage') {
+        stage('Javadoc') {
             steps {
-                jacoco(execPattern: '**/target/jacoco.exec')
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 9') {
+                    sh "${mvn} -P release javadoc:javadoc"
+                }
+                publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: false,
+                        reportDir: 'target/site/apidocs/',
+                        reportFiles: 'index.html',
+                        reportName: 'Javadocs',
+                        reportTitles: ''
+                ])
+            }
+        }
+        stage('Quality') {
+            steps {
+                jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
             }
         }
         stage('Deploy') {
