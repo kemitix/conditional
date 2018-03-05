@@ -36,6 +36,7 @@ pipeline {
         stage('Test Results') {
             steps {
                 junit '**/target/surefire-reports/*.xml'
+                jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
             }
         }
         stage('Archiving') {
@@ -45,7 +46,7 @@ pipeline {
         }
         stage('Quality') {
             steps {
-                jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
+                pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
             }
         }
         stage('Deploy') {
