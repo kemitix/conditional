@@ -27,7 +27,7 @@ pipeline {
                 stage('Java 9') {
                     steps {
                         withMaven(maven: 'maven 3.5.2', jdk: 'JDK 9') {
-                            sh 'mvn clean install'
+                            sh "${mvn} clean install"
                         }
                     }
                 }
