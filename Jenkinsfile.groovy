@@ -53,7 +53,7 @@ pipeline {
                         alwaysLinkToLastBuild: false,
                         keepAll: false,
                         reportDir: 'target/site/apidocs/',
-                        reportFiles: 'allclasses-noframe.html',
+                        reportFiles: 'index.html',
                         reportName: 'Javadocs',
                         reportTitles: ''
                 ])
