@@ -37,6 +37,13 @@ pipeline {
             steps {
                 junit '**/target/surefire-reports/*.xml'
                 jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "${mvn} com.gavinmogan:codacy-maven-plugin:coverage " +
+                            "-DcoverageReportFile=target/site/jacoco/jacoco.xml " +
+                            "-DprojectToken=`$JENKINS_HOME/codacy/token` " +
+                            "-DapiToken=`$JENKINS_HOME/codacy/apitoken` " +
+                            "-Dcommit=`git rev-parse HEAD`"
+                }
             }
         }
         stage('Archiving') {
