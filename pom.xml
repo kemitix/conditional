@@ -16,7 +16,7 @@
         <assertj.version>3.9.1</assertj.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <tiles-maven-plugin.version>2.10</tiles-maven-plugin.version>
-        <kemitix-tiles.version>0.6.1</kemitix-tiles.version>
+        <kemitix-tiles.version>0.7.1</kemitix-tiles.version>
         <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.20.1</maven-failsafe-plugin.version>
         <lombok.version>1.16.20</lombok.version>
