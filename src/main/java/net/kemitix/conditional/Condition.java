@@ -78,6 +78,7 @@ public interface Condition {
      *
      * @return the Condition
      */
+    @SuppressWarnings("PMD.ShortMethodName")
     Condition or(boolean clause);
 
     /**
