@@ -22,32 +22,15 @@
 package net.kemitix.conditional;
 
 /**
- * A {@code Condition} that has evaluated to {@code false}.
+ * An action to perform in a clause when a {@link Condition} is met.
  *
- * @author Paul Campbell (pcampbell@kemitix.net).
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
-final class FalseCondition implements Condition {
+@FunctionalInterface
+public interface Action {
 
-    protected static final Condition FALSE = new net.kemitix.conditional.FalseCondition();
-
-    @Override
-    public Condition and(final boolean clause) {
-        return FALSE;
-    }
-
-    @Override
-    public Condition or(final boolean secondClause) {
-        return Condition.where(secondClause);
-    }
-
-    @Override
-    public Condition then(final Action response) {
-        return FALSE;
-    }
-
-    @Override
-    public void otherwise(final Action response) {
-        response.perform();
-    }
-
+    /**
+     * The action to perform.
+     */
+    void perform();
 }

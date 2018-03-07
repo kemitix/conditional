@@ -41,13 +41,13 @@ final class TrueCondition implements Condition {
     }
 
     @Override
-    public Condition then(final Runnable response) {
-        response.run();
+    public Condition then(final Action response) {
+        response.perform();
         return TRUE;
     }
 
     @Override
-    public void otherwise(final Runnable response) {
+    public void otherwise(final Action response) {
         // do nothing
     }
 
