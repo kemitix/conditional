@@ -15,6 +15,14 @@ pipeline {
                 error("Build failed because SNAPSHOT version")
             }
         }
+        stage('Static Code Analysis') {
+            steps {
+                withMaven(maven: 'maven-3.5.2', jdk: 'JDK 1.8') {
+                    sh "${mvn} checkstyle:checkstyle pmd:pmd"
+                }
+                pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
+            }
+        }
         stage('Build') {
             parallel {
                 stage('Java 8') {
@@ -51,15 +59,10 @@ pipeline {
                 archiveArtifacts '**/target/*.jar'
             }
         }
-        stage('Quality') {
-            steps {
-                pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
-            }
-        }
         stage('Deploy') {
             when { expression { (env.GIT_BRANCH == 'master') } }
             steps {
-                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 9') {
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
                     sh "${mvn} deploy --activate-profiles release -DskipTests=true"
                 }
             }
