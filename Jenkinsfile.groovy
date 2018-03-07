@@ -17,8 +17,8 @@ pipeline {
         }
         stage('Static Code Analysis') {
             steps {
-                withMaven(maven: 'maven-3.5.2', jdk: 'JDK 1.8') {
-                    sh "${mvn} checkstyle:checkstyle pmd:pmd"
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "${mvn} compile checkstyle:checkstyle pmd:pmd"
                 }
                 pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
             }
