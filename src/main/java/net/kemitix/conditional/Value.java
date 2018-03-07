@@ -41,6 +41,7 @@ public interface Value {
      *
      * @return the value from either the trueSupplier or the falseSupplier
      */
+    @SuppressWarnings("PMD.LawOfDemeter")
     static <T> T where(
             boolean clause,
             Supplier<T> trueSupplier,
@@ -123,6 +124,7 @@ public interface Value {
          *
          * @return a true or false value clause
          */
+        @SuppressWarnings("PMD.ShortMethodName")
         ValueClause<T> or(boolean clause);
 
         /**

@@ -78,6 +78,7 @@ public interface Condition {
      *
      * @return the Condition
      */
+    @SuppressWarnings("PMD.ShortMethodName")
     Condition or(boolean clause);
 
     /**
@@ -98,14 +99,14 @@ public interface Condition {
      *
      * @return the Condition
      */
-    Condition then(Runnable response);
+    Condition then(Action response);
 
     /**
      * Perform this response if the {@code Condition} is {@code false}.
      *
      * @param response the response to perform
      */
-    void otherwise(Runnable response);
+    void otherwise(Action response);
 
     /**
      * Create a new {@code Condition} for the clause as a continuation to an existing {@code Condition}.

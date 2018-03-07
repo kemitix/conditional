@@ -10,9 +10,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ConditionalTest {
 
-    private Runnable thenResponse;
+    private Action thenResponse;
 
-    private Runnable otherwiseResponse;
+    private Action otherwiseResponse;
 
     private boolean thenFlag;
 
