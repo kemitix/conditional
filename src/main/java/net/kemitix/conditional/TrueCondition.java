@@ -28,7 +28,7 @@ package net.kemitix.conditional;
  */
 final class TrueCondition implements Condition {
 
-    protected static final Condition TRUE = new net.kemitix.conditional.TrueCondition();
+    public static final Condition TRUE = new net.kemitix.conditional.TrueCondition();
 
     @Override
     public Condition and(final boolean clause) {
@@ -36,6 +36,7 @@ final class TrueCondition implements Condition {
     }
 
     @Override
+    @SuppressWarnings("PMD.ShortMethodName")
     public Condition or(final boolean secondClause) {
         return TRUE;
     }

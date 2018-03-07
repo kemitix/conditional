@@ -45,6 +45,7 @@ class FalseValueClause<T> implements Value.ValueClause<T> {
     }
 
     @Override
+    @SuppressWarnings("PMD.ShortMethodName")
     public Value.ValueClause<T> or(final boolean clause) {
         return Value.where(clause);
     }

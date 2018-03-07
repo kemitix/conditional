@@ -47,6 +47,7 @@ class TrueValueClause<T> implements Value.ValueClause<T> {
     }
 
     @Override
+    @SuppressWarnings("PMD.ShortMethodName")
     public Value.ValueClause<T> or(final boolean clause) {
         return this;
     }
@@ -57,7 +58,7 @@ class TrueValueClause<T> implements Value.ValueClause<T> {
     @RequiredArgsConstructor
     private class TrueValueSupplier implements ValueSupplier<T> {
 
-        private final Supplier<T> valueSupplier;
+        private final transient Supplier<T> valueSupplier;
 
         @Override
         public T otherwise(final Supplier<T> falseSupplier) {
