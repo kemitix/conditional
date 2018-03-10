@@ -21,14 +21,17 @@ pipeline {
             }
         }
         stage('Static Code Analysis') {
-            when { expression { findFiles(glob: '**/src/main/java/*.java').length > 0 } }
+            when { expression { findFiles(glob: '**/src/main/java/**/*.java').length > 0 } }
             steps {
                 withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "${mvn} compile"
+                    sh "${mvn} checkstyle:checkstyle"
+                    sh "${mvn} pmd:pmd"
+                    pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
                     withSonarQubeEnv('sonarqube') {
-                        sh "${mvn} compile checkstyle:checkstyle pmd:pmd org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar"
+                        sh "${mvn} org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar"
                     }
                 }
-                pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
             }
         }
         stage('Build Java 9') {
