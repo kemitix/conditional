@@ -13,13 +13,15 @@ pipeline {
             when {
                 expression {
                     (env.GIT_BRANCH == 'master' || env.CHANGE_TARGET == 'master') &&
-                            (readMavenPom(file: 'pom.xml').version).contains("SNAPSHOT") }
+                            (readMavenPom(file: 'pom.xml').version).contains("SNAPSHOT")
+                }
             }
             steps {
                 error("Build failed because SNAPSHOT version")
             }
         }
         stage('Static Code Analysis') {
+            when { expression { findFiles(glob: '**/src/main/java/*.java').length > 0 } }
             steps {
                 withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
                     sh "${mvn} compile checkstyle:checkstyle pmd:pmd"
@@ -27,25 +29,22 @@ pipeline {
                 pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
             }
         }
-        stage('Build') {
-            parallel {
-                stage('Java 8') {
-                    steps {
-                        withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
-                            sh "${mvn} clean install"
-                        }
-                    }
+        stage('Build Java 9') {
+            steps {
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 9') {
+                    sh "${mvn} clean install"
                 }
-                stage('Java 9') {
-                    steps {
-                        withMaven(maven: 'maven 3.5.2', jdk: 'JDK 9') {
-                            sh "${mvn} clean install"
-                        }
-                    }
+            }
+        }
+        stage('Build Java 8') {
+            steps {
+                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                    sh "${mvn} clean install"
                 }
             }
         }
         stage('Test Results') {
+            when { expression { findFiles(glob: '**/target/surefire-reports/*.xml').length > 0 } }
             steps {
                 junit '**/target/surefire-reports/*.xml'
                 jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
@@ -59,6 +58,7 @@ pipeline {
             }
         }
         stage('Archiving') {
+            when { expression { findFiles(glob: '**/target/*.jar').length > 0 } }
             steps {
                 archiveArtifacts '**/target/*.jar'
             }
