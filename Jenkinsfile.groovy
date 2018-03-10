@@ -23,7 +23,7 @@ pipeline {
         stage('Static Code Analysis') {
             when { expression { findFiles(glob: '**/src/main/java/**/*.java').length > 0 } }
             steps {
-                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                withMaven(maven: 'maven', jdk: 'JDK LTS') {
                     sh "${mvn} compile"
                     sh "${mvn} checkstyle:checkstyle"
                     sh "${mvn} pmd:pmd"
@@ -34,16 +34,16 @@ pipeline {
                 }
             }
         }
-        stage('Build Java 9') {
+        stage('Build Java Next') {
             steps {
-                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 9') {
+                withMaven(maven: 'maven', jdk: 'JDK Next') {
                     sh "${mvn} clean install"
                 }
             }
         }
-        stage('Build Java 8') {
+        stage('Build Java LTS') {
             steps {
-                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                withMaven(maven: 'maven', jdk: 'JDK LTS') {
                     sh "${mvn} clean install"
                 }
             }
@@ -53,7 +53,7 @@ pipeline {
             steps {
                 junit '**/target/surefire-reports/*.xml'
                 jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
-                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                withMaven(maven: 'maven', jdk: 'JDK LTS') {
                     sh "${mvn} com.gavinmogan:codacy-maven-plugin:coverage " +
                             "-DcoverageReportFile=target/site/jacoco/jacoco.xml " +
                             "-DprojectToken=`$JENKINS_HOME/codacy/token` " +
@@ -71,7 +71,7 @@ pipeline {
         stage('Deploy') {
             when { expression { (env.GIT_BRANCH == 'master' && env.GIT_URL.startsWith('https://')) } }
             steps {
-                withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
+                withMaven(maven: 'maven', jdk: 'JDK LTS') {
                     sh "${mvn} deploy --activate-profiles release -DskipTests=true"
                 }
             }
