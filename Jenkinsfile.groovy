@@ -24,7 +24,9 @@ pipeline {
             when { expression { findFiles(glob: '**/src/main/java/*.java').length > 0 } }
             steps {
                 withMaven(maven: 'maven 3.5.2', jdk: 'JDK 1.8') {
-                    sh "${mvn} compile checkstyle:checkstyle pmd:pmd"
+                    withSonarQubeEnv('sonarqube') {
+                        sh "${mvn} compile checkstyle:checkstyle pmd:pmd org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar"
+                    }
                 }
                 pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
             }
