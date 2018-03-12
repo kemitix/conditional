@@ -60,6 +60,7 @@ class TrueValueClause<T> implements Value.ValueClause<T> {
     @RequiredArgsConstructor
     private static final class TrueValueSupplier<T> implements ValueSupplier<T> {
 
+        @SuppressWarnings("PMD.BeanMembersShouldSerialize")
         private final Supplier<T> valueSupplier;
 
         @Override
