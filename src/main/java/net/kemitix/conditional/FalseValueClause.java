@@ -52,8 +52,10 @@ class FalseValueClause<T> implements Value.ValueClause<T> {
 
     /**
      * An intermediate result of the {@link Value} where the clause has evaluated to false.
+     *
+     * @param <T> the type of the value
      */
-    private class FalseValueSupplier implements ValueSupplier<T> {
+    private static final class FalseValueSupplier<T> implements ValueSupplier<T> {
 
         @Override
         public T otherwise(final Supplier<T> falseSupplier) {
