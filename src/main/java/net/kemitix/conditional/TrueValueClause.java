@@ -23,6 +23,7 @@ package net.kemitix.conditional;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -34,35 +35,43 @@ import java.util.function.Supplier;
  */
 class TrueValueClause<T> implements Value.ValueClause<T> {
 
-    protected static final Value.ValueClause TRUE = new TrueValueClause();
+    protected static final Value.ValueClause<?> TRUE = new TrueValueClause<>();
 
     @Override
     public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
-        return new TrueValueSupplier(trueSupplier);
+        return new TrueValueSupplier<>(trueSupplier);
     }
 
     @Override
-    public Value.ValueClause<T> and(final boolean clause) {
-        return Value.where(clause);
+    public Value.ValueClause<T> and(final Supplier<Boolean> clause) {
+        return Value.where(clause.get());
     }
 
     @Override
     @SuppressWarnings("PMD.ShortMethodName")
-    public Value.ValueClause<T> or(final boolean clause) {
+    public Value.ValueClause<T> or(final Supplier<Boolean> clause) {
         return this;
     }
 
     /**
      * An intermediate result of the {@link Value} where the clause has evaluated to true.
+     *
+     * @param <T> the type of the value
      */
     @RequiredArgsConstructor
-    private class TrueValueSupplier implements ValueSupplier<T> {
+    private static final class TrueValueSupplier<T> implements ValueSupplier<T> {
 
-        private final transient Supplier<T> valueSupplier;
+        @SuppressWarnings("PMD.BeanMembersShouldSerialize")
+        private final Supplier<T> valueSupplier;
 
         @Override
         public T otherwise(final Supplier<T> falseSupplier) {
             return valueSupplier.get();
+        }
+
+        @Override
+        public Optional<T> optional() {
+            return Optional.ofNullable(valueSupplier.get());
         }
 
     }

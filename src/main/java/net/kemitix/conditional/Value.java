@@ -43,9 +43,9 @@ public interface Value {
      */
     @SuppressWarnings("PMD.LawOfDemeter")
     static <T> T where(
-            boolean clause,
-            Supplier<T> trueSupplier,
-            Supplier<T> falseSupplier
+            final boolean clause,
+            final Supplier<T> trueSupplier,
+            final Supplier<T> falseSupplier
                       ) {
         return Value.<T>where(clause).then(trueSupplier)
                                      .otherwise(falseSupplier);
@@ -61,8 +61,8 @@ public interface Value {
      * @return an Optional either containing the value from the trueSupplier or empty
      */
     static <T> Optional<T> where(
-            boolean clause,
-            Supplier<T> trueSupplier
+            final boolean clause,
+            final Supplier<T> trueSupplier
                                 ) {
         return Optional.ofNullable(Value.where(clause, trueSupplier, () -> null));
     }
@@ -75,9 +75,12 @@ public interface Value {
      *
      * @return a true or false value clause
      */
-    @SuppressWarnings({"unchecked", "avoidinlineconditionals"})
+    @SuppressWarnings("unchecked")
     static <T> ValueClause<T> where(final boolean clause) {
-        return (ValueClause<T>) (clause ? TrueValueClause.TRUE : FalseValueClause.FALSE);
+        if (clause) {
+            return (ValueClause<T>) TrueValueClause.TRUE;
+        }
+        return (ValueClause<T>) FalseValueClause.FALSE;
     }
 
     /**
@@ -88,7 +91,7 @@ public interface Value {
      *
      * @return a true or false value clause
      */
-    static <T> ValueClause<T> whereNot(boolean clause) {
+    static <T> ValueClause<T> whereNot(final boolean clause) {
         return where(!clause);
     }
 
@@ -115,7 +118,7 @@ public interface Value {
          *
          * @return a true or false value clause
          */
-        ValueClause<T> and(boolean clause);
+        ValueClause<T> and(Supplier<Boolean> clause);
 
         /**
          * Logically OR combine the current {@link ValueClause} with clause.
@@ -125,7 +128,7 @@ public interface Value {
          * @return a true or false value clause
          */
         @SuppressWarnings("PMD.ShortMethodName")
-        ValueClause<T> or(boolean clause);
+        ValueClause<T> or(Supplier<Boolean> clause);
 
         /**
          * Logically AND combine the current {@link ValueClause} with boolean opposite of the clause.
@@ -134,8 +137,8 @@ public interface Value {
          *
          * @return a true or false value clause
          */
-        default ValueClause<T> andNot(final boolean clause) {
-            return and(!clause);
+        default ValueClause<T> andNot(final Supplier<Boolean> clause) {
+            return and(() -> !clause.get());
         }
 
         /**
@@ -145,8 +148,8 @@ public interface Value {
          *
          * @return a true or false value clause
          */
-        default ValueClause<T> orNot(boolean clause) {
-            return or(!clause);
+        default ValueClause<T> orNot(final Supplier<Boolean> clause) {
+            return or(() -> !clause.get());
         }
 
         /**
@@ -165,6 +168,12 @@ public interface Value {
              */
             T otherwise(Supplier<T> falseSupplier);
 
+            /**
+             * Returns the value in an Optional if the {@link ValueClause} is true, or an empty Optional if it is false.
+             *
+             * @return an Optional, possibly containing the value
+             */
+            Optional<T> optional();
         }
 
     }

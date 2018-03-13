@@ -3,6 +3,8 @@ package net.kemitix.conditional;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -76,9 +78,9 @@ public class ConditionalTest {
     public void whereTrueThenDoSomethingAndThenDoSomethingElse() {
         //when
         Condition.where(true)
-                 .then(thenResponse)
-                 .and(true)
-                 .then(otherwiseResponse);
+                .then(thenResponse)
+                .and(() -> true)
+                .then(otherwiseResponse);
         //then
         assertThatBothResponsesRun();
     }
@@ -119,7 +121,7 @@ public class ConditionalTest {
     public void whereNotFalseThenRuns() {
         //when
         Condition.whereNot(false)
-                 .then(thenResponse);
+                .then(thenResponse);
         //then
         assertThatTheThenResponseRuns();
     }
@@ -128,8 +130,8 @@ public class ConditionalTest {
     public void whereNotTrueThenOtherwiseRuns() {
         //when
         Condition.whereNot(true)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
@@ -138,8 +140,8 @@ public class ConditionalTest {
     public void whereTrueAndNotFalseThenRuns() {
         //when
         Condition.where(true)
-                 .andNot(false)
-                 .then(thenResponse);
+                .andNot(() -> false)
+                .then(thenResponse);
         //then
         assertThatTheThenResponseRuns();
     }
@@ -148,9 +150,9 @@ public class ConditionalTest {
     public void whereTrueAndNotTrueThenOtherwiseRuns() {
         //when
         Condition.where(true)
-                 .andNot(true)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
+                .andNot(() -> true)
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
@@ -159,8 +161,8 @@ public class ConditionalTest {
     public void whereFalseOrNotFalseThenRuns() {
         //when
         Condition.where(false)
-                 .orNot(false)
-                 .then(thenResponse);
+                .orNot(() -> false)
+                .then(thenResponse);
         //then
         assertThatTheThenResponseRuns();
     }
@@ -169,9 +171,9 @@ public class ConditionalTest {
     public void whereFalseOrNotTrueThenOtherwiseRuns() {
         //when
         Condition.where(false)
-                 .orNot(true)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
+                .orNot(() -> true)
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
@@ -180,9 +182,9 @@ public class ConditionalTest {
     public void whereFalseElseTrueThenOtherwiseRuns() {
         //when
         Condition.where(false)
-                 .then(thenResponse)
-                 .otherwise(true)
-                 .then(otherwiseResponse);
+                .then(thenResponse)
+                .otherwise(() -> true)
+                .then(otherwiseResponse);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
@@ -191,9 +193,9 @@ public class ConditionalTest {
     public void whereFalseElseFalseThenNothingRuns() {
         //when
         Condition.where(false)
-                 .then(thenResponse)
-                 .otherwise(false)
-                 .then(otherwiseResponse);
+                .then(thenResponse)
+                .otherwise(() -> false)
+                .then(otherwiseResponse);
         //then
         assertThatNoResponseRuns();
     }
@@ -202,8 +204,8 @@ public class ConditionalTest {
     public void whereTrueChainedThensBothRuns() {
         //when
         Condition.where(true)
-                 .then(thenResponse)
-                 .then(otherwiseResponse);
+                .then(thenResponse)
+                .then(otherwiseResponse);
         //then
         assertThatBothResponsesRun();
     }
@@ -212,8 +214,8 @@ public class ConditionalTest {
     public void whereFalseChainedThensNothingRuns() {
         //when
         Condition.where(false)
-                 .then(thenResponse)
-                 .then(otherwiseResponse);
+                .then(thenResponse)
+                .then(otherwiseResponse);
         //then
         assertThatNoResponseRuns();
     }
@@ -235,22 +237,22 @@ public class ConditionalTest {
 
     private void assertThatTheOtherwiseResponseRan() {
         assertThat(otherwiseFlag).as("otherwise response runs")
-                                 .isTrue();
+                .isTrue();
     }
 
     private void assertThatTheThenResponseRan() {
         assertThat(thenFlag).as("then response runs")
-                            .isTrue();
+                .isTrue();
     }
 
     private void assertThatTheOtherwiseResponseDidNotRun() {
         assertThat(otherwiseFlag).as("otherwise response does not run")
-                                 .isFalse();
+                .isFalse();
     }
 
     private void assertThatTheThenResponseDidNotRun() {
         assertThat(thenFlag).as("then response does not run")
-                            .isFalse();
+                .isFalse();
     }
 
     private void assertThatNoResponseRuns() {
@@ -260,27 +262,53 @@ public class ConditionalTest {
 
     private void when(final boolean clause) {
         Condition.where(clause)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
     }
 
     private void when(
             final boolean firstClause,
             final boolean secondClause
-                     ) {
+    ) {
         Condition.where(firstClause)
-                 .and(secondClause)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
+                .and(() -> secondClause)
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
     }
 
     private void whenOr(
             final boolean firstClause,
             final boolean secondClause
-                       ) {
+    ) {
         Condition.where(firstClause)
-                 .or(secondClause)
-                 .then(thenResponse)
-                 .otherwise(otherwiseResponse);
+                .or(() -> secondClause)
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
+    }
+
+    @Test
+    public void shortCurcuitOr() {
+        //given
+        final AtomicInteger atomicInteger = new AtomicInteger();
+        //when
+        Condition.where(true)
+                .or(() -> atomicInteger.compareAndSet(0, 2))
+                .then(thenResponse);
+        //then
+        assertThatTheThenResponseRan();
+        assertThat(atomicInteger).hasValue(0);
+    }
+
+    @Test
+    public void shortCurcuitAnd() {
+        //given
+        final AtomicInteger atomicInteger = new AtomicInteger();
+        //when
+        Condition.where(false)
+                .and(() -> atomicInteger.compareAndSet(0, 2))
+                .then(thenResponse);
+        //then
+        assertThatTheThenResponseDidNotRun();
+        assertThat(atomicInteger).hasValue(0);
     }
 }
