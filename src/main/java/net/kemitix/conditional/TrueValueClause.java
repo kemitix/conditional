@@ -23,6 +23,7 @@ package net.kemitix.conditional;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -34,7 +35,7 @@ import java.util.function.Supplier;
  */
 class TrueValueClause<T> implements Value.ValueClause<T> {
 
-    protected static final Value.ValueClause TRUE = new TrueValueClause<>();
+    protected static final Value.ValueClause<?> TRUE = new TrueValueClause<>();
 
     @Override
     public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
@@ -42,13 +43,13 @@ class TrueValueClause<T> implements Value.ValueClause<T> {
     }
 
     @Override
-    public Value.ValueClause<T> and(final boolean clause) {
-        return Value.where(clause);
+    public Value.ValueClause<T> and(final Supplier<Boolean> clause) {
+        return Value.where(clause.get());
     }
 
     @Override
     @SuppressWarnings("PMD.ShortMethodName")
-    public Value.ValueClause<T> or(final boolean clause) {
+    public Value.ValueClause<T> or(final Supplier<Boolean> clause) {
         return this;
     }
 
@@ -66,6 +67,11 @@ class TrueValueClause<T> implements Value.ValueClause<T> {
         @Override
         public T otherwise(final Supplier<T> falseSupplier) {
             return valueSupplier.get();
+        }
+
+        @Override
+        public Optional<T> optional() {
+            return Optional.ofNullable(valueSupplier.get());
         }
 
     }
