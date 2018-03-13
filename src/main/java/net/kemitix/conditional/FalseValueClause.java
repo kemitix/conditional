@@ -33,11 +33,11 @@ import java.util.function.Supplier;
  */
 class FalseValueClause<T> implements Value.ValueClause<T> {
 
-    protected static final Value.ValueClause FALSE = new FalseValueClause();
+    protected static final Value.ValueClause<?> FALSE = new FalseValueClause<>();
 
     @Override
     public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
-        return new FalseValueSupplier();
+        return new FalseValueSupplier<>();
     }
 
     @Override

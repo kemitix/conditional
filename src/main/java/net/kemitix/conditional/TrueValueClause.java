@@ -35,7 +35,7 @@ import java.util.function.Supplier;
  */
 class TrueValueClause<T> implements Value.ValueClause<T> {
 
-    protected static final Value.ValueClause TRUE = new TrueValueClause<>();
+    protected static final Value.ValueClause<?> TRUE = new TrueValueClause<>();
 
     @Override
     public ValueSupplier<T> then(final Supplier<T> trueSupplier) {

@@ -75,11 +75,12 @@ public interface Value {
      *
      * @return a true or false value clause
      */
+    @SuppressWarnings("unchecked")
     static <T> ValueClause<T> where(final boolean clause) {
         if (clause) {
-            return TrueValueClause.TRUE;
+            return (ValueClause<T>) TrueValueClause.TRUE;
         }
-        return FalseValueClause.FALSE;
+        return (ValueClause<T>) FalseValueClause.FALSE;
     }
 
     /**
