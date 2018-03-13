@@ -4,6 +4,7 @@ import lombok.val;
 import org.junit.Test;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,7 +53,7 @@ public class ValueTest {
     public void valueWhereClauseIsTrue() {
         //when
         val result = Value.<String>where(true).then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -61,7 +62,7 @@ public class ValueTest {
     public void valueWhereClauseIsFalse() {
         //when
         val result = Value.<String>where(false).then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -69,9 +70,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueAndTrueIsTrue() {
         //when
-        val result = Value.<String>where(true).and(true)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).and(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -79,9 +80,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueAndFalseIsFalse() {
         //when
-        val result = Value.<String>where(true).and(false)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).and(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -89,9 +90,9 @@ public class ValueTest {
     @Test
     public void valueWhereFalseAndTrueIsFalse() {
         //when
-        val result = Value.<String>where(false).and(true)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).and(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -99,9 +100,9 @@ public class ValueTest {
     @Test
     public void valueWhereFalseAndFalseIsFalse() {
         //when
-        val result = Value.<String>where(false).and(false)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).and(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -109,9 +110,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueOrTrueIsTrue() {
         //when
-        val result = Value.<String>where(true).or(true)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).or(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -119,9 +120,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueOrFalseIsTrue() {
         //when
-        val result = Value.<String>where(true).or(false)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).or(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -129,9 +130,9 @@ public class ValueTest {
     @Test
     public void valueWhereFalseOrTrueIsTrue() {
         //when
-        val result = Value.<String>where(false).or(true)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).or(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -139,9 +140,9 @@ public class ValueTest {
     @Test
     public void valueWhereFalseOrFalseIsFalse() {
         //when
-        val result = Value.<String>where(false).or(false)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).or(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -150,7 +151,7 @@ public class ValueTest {
     public void valueWhereNotTrueIsFalse() {
         //when
         val result = Value.<String>whereNot(true).then(() -> TRUE)
-                                                 .otherwise(() -> FALSE);
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -159,7 +160,7 @@ public class ValueTest {
     public void valueWhereNotFalseIsTrue() {
         //when
         val result = Value.<String>whereNot(false).then(() -> TRUE)
-                                                  .otherwise(() -> FALSE);
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -167,9 +168,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueAndNotTrueIsFalse() {
         //when
-        val result = Value.<String>where(true).andNot(true)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).andNot(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -177,9 +178,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueAndNotFalseIsTrue() {
         //when
-        val result = Value.<String>where(true).andNot(false)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).andNot(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -187,9 +188,9 @@ public class ValueTest {
     @Test
     public void valueWhereFalseAndNotTrueIsFalse() {
         //when
-        val result = Value.<String>where(false).andNot(true)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).andNot(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -197,9 +198,9 @@ public class ValueTest {
     @Test
     public void valueWhereFalseAndNotFalseIsFalse() {
         //when
-        val result = Value.<String>where(false).andNot(false)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).andNot(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -207,9 +208,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueOrNotTrueIsTrue() {
         //when
-        val result = Value.<String>where(true).orNot(true)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).orNot(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -217,9 +218,9 @@ public class ValueTest {
     @Test
     public void valueWhereTrueOrNotFalseIsTrue() {
         //when
-        val result = Value.<String>where(true).orNot(false)
-                                              .then(() -> TRUE)
-                                              .otherwise(() -> FALSE);
+        val result = Value.<String>where(true).orNot(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
     }
@@ -227,9 +228,9 @@ public class ValueTest {
     @Test
     public void valueWhereFalseOrNotTrueIsFalse() {
         //when
-        val result = Value.<String>where(false).orNot(true)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).orNot(() -> true)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
     }
@@ -237,10 +238,54 @@ public class ValueTest {
     @Test
     public void valueWhereFalseOrNotFalseIsTrue() {
         //when
-        val result = Value.<String>where(false).orNot(false)
-                                               .then(() -> TRUE)
-                                               .otherwise(() -> FALSE);
+        val result = Value.<String>where(false).orNot(() -> false)
+                .then(() -> TRUE)
+                .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
+    }
+
+    @Test
+    public void valueWhereTrueThenIsNotEmpty() {
+        //given
+        final Optional<Object> result = Value.where(true).then(() -> "value").optional();
+        //then
+        assertThat(result).contains("value");
+    }
+
+    @Test
+    public void valueWhereFalseThenIsEmpty() {
+        //given
+        final Optional<Object> result = Value.where(false).then(() -> "value").optional();
+        //when
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shortCurcuitOr() {
+        //given
+        final AtomicInteger atomicInteger = new AtomicInteger();
+        //when
+        final Optional<String> result = Value.<String>where(true)
+                .or(() -> atomicInteger.compareAndSet(0, 2))
+                .then(() -> "Pass")
+                .optional();
+        //then
+        assertThat(result).contains("Pass");
+        assertThat(atomicInteger).hasValue(0);
+    }
+
+    @Test
+    public void shortCurcuitAnd() {
+        //given
+        final AtomicInteger atomicInteger = new AtomicInteger();
+        //when
+        final Optional<String> result = Value.<String>where(false)
+                .and(() -> atomicInteger.compareAndSet(0, 2))
+                .then(() -> "Pass")
+                .optional();
+        //then
+        assertThat(result).isEmpty();
+        assertThat(atomicInteger).hasValue(0);
     }
 }

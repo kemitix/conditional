@@ -21,6 +21,7 @@
 
 package net.kemitix.conditional;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -40,14 +41,13 @@ class FalseValueClause<T> implements Value.ValueClause<T> {
     }
 
     @Override
-    public Value.ValueClause<T> and(final boolean clause) {
+    public Value.ValueClause<T> and(final Supplier<Boolean> clause) {
         return this;
     }
 
     @Override
-    @SuppressWarnings("PMD.ShortMethodName")
-    public Value.ValueClause<T> or(final boolean clause) {
-        return Value.where(clause);
+    public Value.ValueClause<T> or(final Supplier<Boolean> clause) {
+        return Value.where(clause.get());
     }
 
     /**
@@ -60,6 +60,11 @@ class FalseValueClause<T> implements Value.ValueClause<T> {
         @Override
         public T otherwise(final Supplier<T> falseSupplier) {
             return falseSupplier.get();
+        }
+
+        @Override
+        public Optional<T> optional() {
+            return Optional.empty();
         }
 
     }
