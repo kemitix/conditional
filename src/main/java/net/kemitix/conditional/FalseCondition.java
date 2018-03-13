@@ -21,6 +21,8 @@
 
 package net.kemitix.conditional;
 
+import java.util.function.Supplier;
+
 /**
  * A {@code Condition} that has evaluated to {@code false}.
  *
@@ -31,14 +33,13 @@ final class FalseCondition implements Condition {
     public static final Condition FALSE = new net.kemitix.conditional.FalseCondition();
 
     @Override
-    public Condition and(final boolean clause) {
+    public Condition and(final Supplier<Boolean> clause) {
         return FALSE;
     }
 
     @Override
-    @SuppressWarnings("PMD.ShortMethodName")
-    public Condition or(final boolean secondClause) {
-        return Condition.where(secondClause);
+    public Condition or(final Supplier<Boolean> secondClause) {
+        return Condition.where(secondClause.get());
     }
 
     @Override
