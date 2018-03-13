@@ -21,37 +21,16 @@
 
 package net.kemitix.conditional;
 
-import java.util.function.Supplier;
-
 /**
- * A {@code Condition} that has evaluated to {@code true}.
+ * An action to perform in a clause when a {@link Condition} is met.
  *
- * @author Paul Campbell (pcampbell@kemitix.net).
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
-final class TrueCondition implements Condition {
+@FunctionalInterface
+public interface Action {
 
-    public static final Condition TRUE = new net.kemitix.conditional.TrueCondition();
-
-    @Override
-    public Condition and(final Supplier<Boolean> clause) {
-        return Condition.where(clause.get());
-    }
-
-    @Override
-    @SuppressWarnings("PMD.ShortMethodName")
-    public Condition or(final Supplier<Boolean> secondClause) {
-        return TRUE;
-    }
-
-    @Override
-    public Condition then(final Action response) {
-        response.perform();
-        return TRUE;
-    }
-
-    @Override
-    public void otherwise(final Action response) {
-        // do nothing
-    }
-
+    /**
+     * The action to perform.
+     */
+    void perform();
 }

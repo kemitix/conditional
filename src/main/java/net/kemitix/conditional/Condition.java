@@ -21,6 +21,8 @@
 
 package net.kemitix.conditional;
 
+import java.util.function.Supplier;
+
 /**
  * If-then-else in a functional-style.
  *
@@ -35,9 +37,11 @@ public interface Condition {
      *
      * @return the Condition
      */
-    @SuppressWarnings("avoidinlineconditionals")
     static Condition where(final boolean clause) {
-        return clause ? TrueCondition.TRUE : FalseCondition.FALSE;
+        if (clause) {
+            return TrueCondition.TRUE;
+        }
+        return FalseCondition.FALSE;
     }
 
     /**
@@ -58,7 +62,7 @@ public interface Condition {
      *
      * @return the Condition
      */
-    Condition and(boolean clause);
+    Condition and(Supplier<Boolean> clause);
 
     /**
      * Logically AND combine the current {@code Condition} with boolean opposite of the clause.
@@ -67,8 +71,8 @@ public interface Condition {
      *
      * @return the Condition
      */
-    default Condition andNot(final boolean clause) {
-        return and(!clause);
+    default Condition andNot(final Supplier<Boolean> clause) {
+        return and(() -> !clause.get());
     }
 
     /**
@@ -78,7 +82,8 @@ public interface Condition {
      *
      * @return the Condition
      */
-    Condition or(boolean clause);
+    @SuppressWarnings("PMD.ShortMethodName")
+    Condition or(Supplier<Boolean> clause);
 
     /**
      * Logically OR combine the current {@code Condition} with the boolean opposite of the clause.
@@ -87,8 +92,8 @@ public interface Condition {
      *
      * @return the Condition
      */
-    default Condition orNot(final boolean clause) {
-        return or(!clause);
+    default Condition orNot(final Supplier<Boolean> clause) {
+        return or(() -> !clause.get());
     }
 
     /**
@@ -98,14 +103,14 @@ public interface Condition {
      *
      * @return the Condition
      */
-    Condition then(Runnable response);
+    Condition then(Action response);
 
     /**
      * Perform this response if the {@code Condition} is {@code false}.
      *
      * @param response the response to perform
      */
-    void otherwise(Runnable response);
+    void otherwise(Action response);
 
     /**
      * Create a new {@code Condition} for the clause as a continuation to an existing {@code Condition}.
@@ -114,8 +119,8 @@ public interface Condition {
      *
      * @return the Condition
      */
-    default Condition otherwise(final boolean clause) {
-        return where(clause);
+    default Condition otherwise(final Supplier<Boolean> clause) {
+        return where(clause.get());
     }
 
 }
