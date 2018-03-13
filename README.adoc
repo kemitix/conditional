@@ -59,7 +59,7 @@ if (isTrue() && isAlsoTrue()) {
 [[source,java]]
 ----
 Condition.where(isTrue())
-         .and(isAlsoTrue())
+         .and(() -> isAlsoTrue())
          .then(() -> doSomething())
          .otherwise(() -> doSomethingElse());
 ----
@@ -78,7 +78,7 @@ if (isTrue() || alternativeIsTrue()) {
 [[source,java]]
 ----
 Condition.where(isTrue())
-         .or(alternativeIsTrue())
+         .or(() -> alternativeIsTrue())
          .then(() -> doSomething())
          .otherwise(() -> doSomethingElse());
 ----
@@ -115,7 +115,7 @@ if (isTrue() || !isFalse()) {
 [[source,java]]
 ----
 Condition.where(isTrue())
-         .andNot(isFalse())
+         .andNot(() -> isFalse())
          .then(() -> doSomething())
          .otherwise(() -> doSomethingElse());
 ----
@@ -134,7 +134,7 @@ if (isFalse() || !isAlsoFalse()) {
 [[source,java]]
 ----
 Condition.where(isFalse())
-         .orNot(isAlsoFalse())
+         .orNot(() -> isAlsoFalse())
          .then(() -> doSomething())
          .otherwise(() -> doSomethingElse());
 ----
@@ -154,7 +154,7 @@ if (isFalse()) {
 ----
 Condition.where(isFalse())
          .then(() -> doSomething())
-         .otherwise(isTrue())
+         .otherwise(() -> isTrue())
          .then(() -> doSomethingElse());
 ----
 
@@ -174,7 +174,7 @@ if (isTrue()) {
 ----
 Condition.where(isTrue())
          .then(() -> doSomething())
-         .and(isAlsoTrue())
+         .and(() -> isAlsoTrue())
          .then(() -> doSomethingElse());
 ----
 
@@ -213,8 +213,9 @@ final Optional<String> result = Value.where(isTrue(), () -> TRUE);
 
 [[source,java]]
 ----
-final String result = Value.<String>where(isTrue()).then(() -> TRUE)
-                                                   .otherwise(() -> FALSE);
+final String result = Value.<String>where(isTrue())
+                           .then(() -> TRUE)
+                           .otherwise(() -> FALSE);
 ----
 
 ### if-not-then-else
@@ -231,8 +232,9 @@ if (!isTrue()) {
 
 [[source,java]]
 ----
-final String result = Value.<String>whereNot(isTrue()).then(() -> TRUE)
-                                                      .otherwise(() -> FALSE);
+final String result = Value.<String>whereNot(isTrue())
+                           .then(() -> TRUE)
+                           .otherwise(() -> FALSE);
 ----
 
 ### if-and-then-else
@@ -249,9 +251,10 @@ if (isTrue() && alternativeIsTrue()) {
 
 [[source,java]]
 ----
-final String result = Value.<String>where(isTrue()).and(alternativeIsTrue())
-                                                   .then(() -> TRUE)
-                                                   .otherwise(() -> FALSE);
+final String result = Value.<String>where(isTrue())
+                           .and(() -> alternativeIsTrue())
+                           .then(() -> TRUE)
+                           .otherwise(() -> FALSE);
 ----
 
 ### if-and-not-then-else
@@ -268,9 +271,10 @@ if (isTrue() && !alternativeIsFalse()) {
 
 [[source,java]]
 ----
-final String result = Value.<String>where(isTrue()).andNot(alternativeIsFalse())
-                                                   .then(() -> TRUE)
-                                                   .otherwise(() -> FALSE);
+final String result = Value.<String>where(isTrue())
+                           .andNot(() -> alternativeIsFalse())
+                           .then(() -> TRUE)
+                           .otherwise(() -> FALSE);
 ----
 
 ### if-or-then-else
@@ -287,9 +291,10 @@ if (isTrue() || alternativeIsTrue()) {
 
 [[source,java]]
 ----
-final String result = Value.<String>where(isTrue()).or(alternativeIsTrue())
-                                                   .then(() -> TRUE)
-                                                   .otherwise(() -> FALSE);
+final String result = Value.<String>where(isTrue())
+                           .or(() -> alternativeIsTrue())
+                           .then(() -> TRUE)
+                           .otherwise(() -> FALSE);
 ----
 
 ### if-or-not-then-else
@@ -306,7 +311,27 @@ if (isTrue() || !isFalse()) {
 
 [[source,java]]
 ----
-final String result = Value.<String>where(isTrue()).orNot(isFalse())
-                                                   .then(() -> TRUE)
-                                                   .otherwise(() -> FALSE);
+final String result = Value.<String>where(isTrue())
+                           .orNot(() -> isFalse())
+                           .then(() -> TRUE)
+                           .otherwise(() -> FALSE);
 ----
+
+### if-then
+
+[[source,java]]
+-----
+Optional<String> result;
+if (isTrue()) {
+    result = Optional.of(TRUE);
+} else {
+    result = Optional.empty();
+}
+-----
+
+[[source,java]]
+-----
+final Optional<String> result = Value.<String>where(isTrue())
+                                     .then(() -> TRUE)
+                                     .optional();
+-----

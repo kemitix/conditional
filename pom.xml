@@ -4,28 +4,38 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <kemitix-checkstyle-ruleset.version>3.2.0</kemitix-checkstyle-ruleset.version>
-        <kemitix-checkstyle-ruleset.level>5-complexity</kemitix-checkstyle-ruleset.level>
+        <java.version>1.8</java.version>
+        <kemitix-checkstyle.version>4.0.1</kemitix-checkstyle.version>
+        <kemitix.checkstyle.ruleset.level>5-complexity</kemitix.checkstyle.ruleset.level>
         <jacoco-class-line-covered-ratio>1</jacoco-class-line-covered-ratio>
         <jacoco-class-instruction-covered-ratio>1</jacoco-class-instruction-covered-ratio>
         <jacoco-class-missed-count-maximum>0</jacoco-class-missed-count-maximum>
         <pitest.coverage>100</pitest.coverage>
         <pitest.mutation>100</pitest.mutation>
         <junit.version>4.12</junit.version>
-        <assertj.version>3.8.0</assertj.version>
+        <assertj.version>3.9.1</assertj.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <tiles-maven-plugin.version>2.10</tiles-maven-plugin.version>
+        <kemitix-tiles.version>0.8.1</kemitix-tiles.version>
+        <lombok.version>1.16.20</lombok.version>
     </properties>
 
     <parent>
-    <groupId>net.kemitix</groupId>
+        <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-        <version>3.2.0</version>
+        <version>5.1.0</version>
         <relativePath/>
     </parent>
     <artifactId>conditional</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0-SNAPSHOT</version>
 
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -43,25 +53,17 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>net.kemitix</groupId>
-                <artifactId>kemitix-checkstyle-ruleset-maven-plugin</artifactId>
-                <version>${kemitix-checkstyle-ruleset.version}</version>
+                <groupId>io.repaint.maven</groupId>
+                <artifactId>tiles-maven-plugin</artifactId>
+                <version>${tiles-maven-plugin.version}</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <level>${kemitix-checkstyle-ruleset.level}</level>
+                    <tiles>
+                        <tile>net.kemitix.tiles:all:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:pmd-strict:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.checkstyle:tile:${kemitix-checkstyle.version}</tile>
+                    </tiles>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>${coveralls-maven-plugin.version}</version>
             </plugin>
         </plugins>
     </build>

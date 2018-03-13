@@ -21,6 +21,7 @@
 
 package net.kemitix.conditional;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -32,31 +33,39 @@ import java.util.function.Supplier;
  */
 class FalseValueClause<T> implements Value.ValueClause<T> {
 
-    protected static final Value.ValueClause FALSE = new FalseValueClause();
+    protected static final Value.ValueClause<?> FALSE = new FalseValueClause<>();
 
     @Override
     public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
-        return new FalseValueSupplier();
+        return new FalseValueSupplier<>();
     }
 
     @Override
-    public Value.ValueClause<T> and(final boolean clause) {
+    public Value.ValueClause<T> and(final Supplier<Boolean> clause) {
         return this;
     }
 
     @Override
-    public Value.ValueClause<T> or(final boolean clause) {
-        return Value.where(clause);
+    @SuppressWarnings("PMD.ShortMethodName")
+    public Value.ValueClause<T> or(final Supplier<Boolean> clause) {
+        return Value.where(clause.get());
     }
 
     /**
      * An intermediate result of the {@link Value} where the clause has evaluated to false.
+     *
+     * @param <T> the type of the value
      */
-    private class FalseValueSupplier implements ValueSupplier<T> {
+    private static final class FalseValueSupplier<T> implements ValueSupplier<T> {
 
         @Override
         public T otherwise(final Supplier<T> falseSupplier) {
             return falseSupplier.get();
+        }
+
+        @Override
+        public Optional<T> optional() {
+            return Optional.empty();
         }
 
     }

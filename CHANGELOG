@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+0.4.0
+-----
+
+* Building with Jenkins
+* Upgrade `kemitix-parent` to 5.0.3
+
 0.3.0
 -----
 
