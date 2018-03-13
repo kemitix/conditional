@@ -79,6 +79,7 @@ public interface Condition {
      *
      * @return the Condition
      */
+    @SuppressWarnings("PMD.ShortMethodName")
     Condition or(Supplier<Boolean> clause);
 
     /**

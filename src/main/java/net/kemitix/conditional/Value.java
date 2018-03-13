@@ -122,6 +122,7 @@ public interface Value {
          *
          * @return a true or false value clause
          */
+        @SuppressWarnings("PMD.ShortMethodName")
         ValueClause<T> or(Supplier<Boolean> clause);
 
         /**
