@@ -38,7 +38,10 @@ public interface Condition {
      * @return the Condition
      */
     static Condition where(final boolean clause) {
-        return clause ? TrueCondition.TRUE : FalseCondition.FALSE;
+        if (clause) {
+            return TrueCondition.TRUE;
+        }
+        return FalseCondition.FALSE;
     }
 
     /**

@@ -38,6 +38,7 @@ final class TrueCondition implements Condition {
     }
 
     @Override
+    @SuppressWarnings("PMD.ShortMethodName")
     public Condition or(final Supplier<Boolean> secondClause) {
         return TRUE;
     }

@@ -41,6 +41,7 @@ public interface Value {
      *
      * @return the value from either the trueSupplier or the falseSupplier
      */
+    @SuppressWarnings("PMD.LawOfDemeter")
     static <T> T where(
             final boolean clause,
             final Supplier<T> trueSupplier,
@@ -75,7 +76,10 @@ public interface Value {
      * @return a true or false value clause
      */
     static <T> ValueClause<T> where(final boolean clause) {
-        return (ValueClause<T>) (clause ? TrueValueClause.TRUE : FalseValueClause.FALSE);
+        if (clause) {
+            return TrueValueClause.TRUE;
+        }
+        return FalseValueClause.FALSE;
     }
 
     /**
