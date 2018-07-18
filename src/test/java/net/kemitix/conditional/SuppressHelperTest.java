@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 public class SuppressHelperTest implements WithAssertions {
 
     @Test
-    public void utilityClass_canNotInstantiate() throws NoSuchMethodException {
+    public void utilityClassCannotBeInstantiate() throws NoSuchMethodException {
         final Constructor<SuppressHelper> constructor = SuppressHelper.class.getDeclaredConstructor();
         constructor.setAccessible(true);
         assertThatExceptionOfType(UnsupportedOperationException.class)

@@ -313,7 +313,7 @@ public class ConditionalTest implements WithAssertions {
     }
 
     @Test
-    public void whereTrue_thenThrowException() {
+    public void whereTrueThenThrowException() {
         //given
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(() -> Condition.where(true)
@@ -321,13 +321,13 @@ public class ConditionalTest implements WithAssertions {
     }
 
     @Test
-    public void whereFalse_thenDoNotThrowException() throws Exception {
+    public void whereFalseThenDoNotThrowException() throws Exception {
         Condition.where(false)
                 .thenThrow(new IOException());
     }
 
     @Test
-    public void whereFalse_otherwiseThenThrowException() {
+    public void whereFalseOtherwiseThenThrowException() {
         //given
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(() -> Condition.where(false)
@@ -335,7 +335,7 @@ public class ConditionalTest implements WithAssertions {
     }
 
     @Test
-    public void whereTrue_otherwiseThenDoNotThrowException() throws Exception {
+    public void whereTrueOtherwiseThenDoNotThrowException() throws Exception {
         Condition.where(true)
                 .otherwiseThrow(new IOException());
     }
