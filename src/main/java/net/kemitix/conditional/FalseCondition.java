@@ -53,4 +53,9 @@ final class FalseCondition implements Condition {
         response.perform();
     }
 
+    @Override
+    public void thenThrow(final Exception exception) {
+        // do nothing
+    }
+
 }

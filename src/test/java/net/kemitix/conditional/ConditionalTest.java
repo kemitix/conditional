@@ -1,16 +1,16 @@
 package net.kemitix.conditional;
 
+import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
-public class ConditionalTest {
+public class ConditionalTest implements WithAssertions {
 
     private Action thenResponse;
 
@@ -310,5 +310,19 @@ public class ConditionalTest {
         //then
         assertThatTheThenResponseDidNotRun();
         assertThat(atomicInteger).hasValue(0);
+    }
+
+    @Test
+    public void whereTrue_thenThrowException() {
+        //given
+        assertThatExceptionOfType(IOException.class)
+                .isThrownBy(() -> Condition.where(true)
+                        .thenThrow(new IOException()));
+    }
+
+    @Test
+    public void whereFalse_thenDoNotThrowException() throws Exception {
+        Condition.where(false)
+                .thenThrow(new IOException());
     }
 }

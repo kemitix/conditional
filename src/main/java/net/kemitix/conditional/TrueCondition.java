@@ -54,4 +54,9 @@ final class TrueCondition implements Condition {
         // do nothing
     }
 
+    @Override
+    public void thenThrow(final Exception exception) throws Exception {
+        throw exception;
+    }
+
 }

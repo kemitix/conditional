@@ -123,4 +123,12 @@ public interface Condition {
         return where(clause.get());
     }
 
+    /**
+     * Throw then exception if the {@code Condition} is {@code true}.
+     *
+     * @param exception the Exception to throw
+     * @throws Exception the exception
+     */
+    @SuppressWarnings({"illegalthrows", "PMD.SignatureDeclareThrowsException"})
+    void thenThrow(Exception exception) throws Exception;
 }
