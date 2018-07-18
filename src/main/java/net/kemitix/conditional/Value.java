@@ -100,7 +100,7 @@ public interface Value {
      *
      * @param <T> the type of the value
      */
-    interface ValueClause<T> {
+    /* default */ interface ValueClause<T> {
 
         /**
          * Create a {@link ValueSupplier} with the {@link Supplier} should the {@link ValueClause} be true.
@@ -157,7 +157,7 @@ public interface Value {
          *
          * @param <T> the type of the value
          */
-        interface ValueSupplier<T> {
+        /* default */ interface ValueSupplier<T> {
 
             /**
              * Determine the value by whether the {@link ValueClause} was true or false.
