@@ -325,4 +325,18 @@ public class ConditionalTest implements WithAssertions {
         Condition.where(false)
                 .thenThrow(new IOException());
     }
+
+    @Test
+    public void whereFalse_otherwiseThenThrowException() {
+        //given
+        assertThatExceptionOfType(IOException.class)
+                .isThrownBy(() -> Condition.where(false)
+                        .otherwiseThrow(new IOException()));
+    }
+
+    @Test
+    public void whereTrue_otherwiseThenDoNotThrowException() throws Exception {
+        Condition.where(true)
+                .otherwiseThrow(new IOException());
+    }
 }

@@ -5,6 +5,7 @@ CHANGELOG
 -----
 
 * Add `thenThrow(Exception)`
+* Add `otherwiseThrow(Exception)`
 
 0.4.0
 -----
