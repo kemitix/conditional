@@ -322,8 +322,10 @@ public class ConditionalTest implements WithAssertions {
 
     @Test
     public void whereFalseThenDoNotThrowException() throws Exception {
-        Condition.where(false)
-                .thenThrow(new IOException());
+        assertThatCode(() ->
+                Condition.where(false)
+                        .thenThrow(new IOException()))
+                .doesNotThrowAnyException();
     }
 
     @Test
@@ -336,7 +338,9 @@ public class ConditionalTest implements WithAssertions {
 
     @Test
     public void whereTrueOtherwiseThenDoNotThrowException() throws Exception {
-        Condition.where(true)
-                .otherwiseThrow(new IOException());
+        assertThatCode(() ->
+                Condition.where(true)
+                        .otherwiseThrow(new IOException()))
+                .doesNotThrowAnyException();
     }
 }
