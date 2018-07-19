@@ -21,47 +21,18 @@
 
 package net.kemitix.conditional;
 
-import java.util.function.Supplier;
-
 /**
- * A {@code Condition} that has evaluated to {@code true}.
+ * Holder for strings for suppressing Checkstyle and PMD warnings.
  *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
-final class TrueCondition implements Condition {
+final class SuppressHelper {
+    public static final String CS_ILLEGALTHROWS = "illegalthrows";
 
-    public static final Condition TRUE = new net.kemitix.conditional.TrueCondition();
-
-    @Override
-    public Condition and(final Supplier<Boolean> clause) {
-        return Condition.where(clause.get());
+    /**
+     * Restricted constructor.
+     */
+    protected SuppressHelper() {
+        throw new UnsupportedOperationException();
     }
-
-    @Override
-    @SuppressWarnings("PMD.ShortMethodName")
-    public Condition or(final Supplier<Boolean> secondClause) {
-        return TRUE;
-    }
-
-    @Override
-    public Condition then(final Action response) {
-        response.perform();
-        return TRUE;
-    }
-
-    @Override
-    public void otherwise(final Action response) {
-        // do nothing
-    }
-
-    @Override
-    public void thenThrow(final Exception exception) throws Exception {
-        throw exception;
-    }
-
-    @Override
-    public void otherwiseThrow(final Exception exception) throws Exception {
-        // do nothing
-    }
-
 }

@@ -28,6 +28,7 @@ import java.util.function.Supplier;
  *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
+@SuppressWarnings({"methodcount", "PMD.TooManyMethods"})
 public interface Condition {
 
     /**
@@ -123,4 +124,21 @@ public interface Condition {
         return where(clause.get());
     }
 
+    /**
+     * Throw then exception if the {@code Condition} is {@code true}.
+     *
+     * @param exception the Exception to throw
+     * @throws Exception the exception
+     */
+    @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
+    void thenThrow(Exception exception) throws Exception;
+
+    /**
+     * Throw then exception if the {@code Condition} is {@code false}.
+     *
+     * @param exception the Exception to throw
+     * @throws Exception the exception
+     */
+    @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
+    void otherwiseThrow(Exception exception) throws Exception;
 }
