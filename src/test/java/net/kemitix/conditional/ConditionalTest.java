@@ -7,18 +7,21 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static net.kemitix.conditional.Condition.where;
+
 /**
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
 public class ConditionalTest implements WithAssertions {
 
     private Action thenResponse;
-
     private Action otherwiseResponse;
-
     private boolean thenFlag;
-
     private boolean otherwiseFlag;
+    private final org.assertj.core.api.Condition<? super Condition> trueCondition =
+            new org.assertj.core.api.Condition<>(Condition::isTrue, "is true");
+    private final org.assertj.core.api.Condition<? super Condition> falseCondition =
+            new org.assertj.core.api.Condition<>(Condition::isFalse, "is false");
 
     @Before
     public void setUp() {
@@ -77,7 +80,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueThenDoSomethingAndThenDoSomethingElse() {
         //when
-        Condition.where(true)
+        where(true)
                 .then(thenResponse)
                 .and(() -> true)
                 .then(otherwiseResponse);
@@ -139,7 +142,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueAndNotFalseThenRuns() {
         //when
-        Condition.where(true)
+        where(true)
                 .andNot(() -> false)
                 .then(thenResponse);
         //then
@@ -149,7 +152,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueAndNotTrueThenOtherwiseRuns() {
         //when
-        Condition.where(true)
+        where(true)
                 .andNot(() -> true)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -160,7 +163,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseOrNotFalseThenRuns() {
         //when
-        Condition.where(false)
+        where(false)
                 .orNot(() -> false)
                 .then(thenResponse);
         //then
@@ -170,7 +173,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseOrNotTrueThenOtherwiseRuns() {
         //when
-        Condition.where(false)
+        where(false)
                 .orNot(() -> true)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -181,7 +184,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseElseTrueThenOtherwiseRuns() {
         //when
-        Condition.where(false)
+        where(false)
                 .then(thenResponse)
                 .otherwise(() -> true)
                 .then(otherwiseResponse);
@@ -192,7 +195,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseElseFalseThenNothingRuns() {
         //when
-        Condition.where(false)
+        where(false)
                 .then(thenResponse)
                 .otherwise(() -> false)
                 .then(otherwiseResponse);
@@ -203,7 +206,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueChainedThensBothRuns() {
         //when
-        Condition.where(true)
+        where(true)
                 .then(thenResponse)
                 .then(otherwiseResponse);
         //then
@@ -213,7 +216,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseChainedThensNothingRuns() {
         //when
-        Condition.where(false)
+        where(false)
                 .then(thenResponse)
                 .then(otherwiseResponse);
         //then
@@ -261,7 +264,7 @@ public class ConditionalTest implements WithAssertions {
     }
 
     private void when(final boolean clause) {
-        Condition.where(clause)
+        where(clause)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
     }
@@ -270,7 +273,7 @@ public class ConditionalTest implements WithAssertions {
             final boolean firstClause,
             final boolean secondClause
     ) {
-        Condition.where(firstClause)
+        where(firstClause)
                 .and(() -> secondClause)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -280,7 +283,7 @@ public class ConditionalTest implements WithAssertions {
             final boolean firstClause,
             final boolean secondClause
     ) {
-        Condition.where(firstClause)
+        where(firstClause)
                 .or(() -> secondClause)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -291,7 +294,7 @@ public class ConditionalTest implements WithAssertions {
         //given
         final AtomicInteger atomicInteger = new AtomicInteger();
         //when
-        Condition.where(true)
+        where(true)
                 .or(() -> atomicInteger.compareAndSet(0, 2))
                 .then(thenResponse);
         //then
@@ -304,7 +307,7 @@ public class ConditionalTest implements WithAssertions {
         //given
         final AtomicInteger atomicInteger = new AtomicInteger();
         //when
-        Condition.where(false)
+        where(false)
                 .and(() -> atomicInteger.compareAndSet(0, 2))
                 .then(thenResponse);
         //then
@@ -316,14 +319,14 @@ public class ConditionalTest implements WithAssertions {
     public void whereTrueThenThrowException() {
         //given
         assertThatExceptionOfType(IOException.class)
-                .isThrownBy(() -> Condition.where(true)
+                .isThrownBy(() -> where(true)
                         .thenThrow(new IOException()));
     }
 
     @Test
     public void whereFalseThenDoNotThrowException() throws Exception {
         assertThatCode(() ->
-                Condition.where(false)
+                where(false)
                         .thenThrow(new IOException()))
                 .doesNotThrowAnyException();
     }
@@ -332,15 +335,113 @@ public class ConditionalTest implements WithAssertions {
     public void whereFalseOtherwiseThenThrowException() {
         //given
         assertThatExceptionOfType(IOException.class)
-                .isThrownBy(() -> Condition.where(false)
+                .isThrownBy(() -> where(false)
                         .otherwiseThrow(new IOException()));
     }
 
     @Test
     public void whereTrueOtherwiseThenDoNotThrowException() throws Exception {
         assertThatCode(() ->
-                Condition.where(true)
+                where(true)
                         .otherwiseThrow(new IOException()))
                 .doesNotThrowAnyException();
+    }
+
+    @Test
+    public void whereTrueConditionAndTrueConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereTrueConditionAndFalseConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereFalseConditionAndTrueConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereFalseConditionAndFalseConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereTrueConditionOrTrueConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereTrueConditionOrFalseConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereFalseConditionOrTrueConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereFalseConditionOrFalseConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereTrueWhenNotThenFalse() {
+        assertThat(Condition.where(true).not()).is(falseCondition);
+    }
+
+    @Test
+    public void whereFalseWhenNotThenTriue() {
+        assertThat(Condition.where(false).not()).is(trueCondition);
     }
 }

@@ -62,4 +62,15 @@ final class FalseCondition implements Condition {
     public void otherwiseThrow(final Exception exception) throws Exception {
         throw exception;
     }
+
+    @Override
+    public boolean isTrue() {
+        return false;
+    }
+
+    @Override
+    public boolean isFalse() {
+        return true;
+    }
+
 }

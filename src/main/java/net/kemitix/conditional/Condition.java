@@ -35,7 +35,6 @@ public interface Condition {
      * Create a new {@code Condition} for the clause.
      *
      * @param clause the condition to test
-     *
      * @return the Condition
      */
     static Condition where(final boolean clause) {
@@ -49,59 +48,102 @@ public interface Condition {
      * Create a new {@code Condition} for the boolean opposite of the clause.
      *
      * @param clause the condition to test
-     *
      * @return the Condition
+     * @deprecated use {@link #not()}
      */
+    @Deprecated
     static Condition whereNot(final boolean clause) {
-        return where(!clause);
+        return where(clause).not();
+    }
+
+    /**
+     * Checks if the Condition is true or not.
+     *
+     * @return true if the Condition is true
+     */
+    boolean isTrue();
+
+    /**
+     * Checks of the Condition is false or not.
+     *
+     * @return true if the Condition is false
+     */
+    boolean isFalse();
+
+    /**
+     * Negates the Condtion.
+     *
+     * @return a false Condition if the Condition is true, or a true Condition if the Condition is false.
+     */
+    default Condition not() {
+        return Condition.where(isFalse());
     }
 
     /**
      * Logically AND combine the current {@code Condition} with the clause.
      *
      * @param clause the condition to test
-     *
      * @return the Condition
      */
     Condition and(Supplier<Boolean> clause);
 
     /**
+     * Logicaly OR current {@code Condition} with the other {@code Condition}.
+     *
+     * @param other the other Condition
+     * @return true if both Conditions are true
+     */
+    default Condition and(Condition other) {
+        return Condition.where(isTrue()).and(other::isTrue);
+    }
+
+    /**
      * Logically AND combine the current {@code Condition} with boolean opposite of the clause.
      *
      * @param clause the condition to test
-     *
      * @return the Condition
+     * @deprecated use {@link #not()}
      */
+    @Deprecated
     default Condition andNot(final Supplier<Boolean> clause) {
-        return and(() -> !clause.get());
+        return and(clause).not();
     }
 
     /**
      * Logically OR combine the current {@code Condition} with the clause.
      *
      * @param clause the condition to test
-     *
      * @return the Condition
      */
     @SuppressWarnings("PMD.ShortMethodName")
     Condition or(Supplier<Boolean> clause);
 
     /**
+     * Logically OR the current {@code Condition} with the other {@code Condition}.
+     *
+     * @param other the other Condition
+     * @return true if either Condition is true
+     */
+    default Condition or(Condition other) {
+        return where(isTrue()).or(other::isTrue);
+    }
+
+    /**
      * Logically OR combine the current {@code Condition} with the boolean opposite of the clause.
      *
      * @param clause the condition to test
-     *
      * @return the Condition
+     * @deprecated use {@link #not()}
      */
+    @Deprecated
     default Condition orNot(final Supplier<Boolean> clause) {
-        return or(() -> !clause.get());
+        return or(clause).not();
     }
 
     /**
      * Perform this response if the {@code Condition} is {@code true}.
      *
      * @param response the response to perform
-     *
      * @return the Condition
      */
     Condition then(Action response);
@@ -117,7 +159,6 @@ public interface Condition {
      * Create a new {@code Condition} for the clause as a continuation to an existing {@code Condition}.
      *
      * @param clause the condition to test
-     *
      * @return the Condition
      */
     default Condition otherwise(final Supplier<Boolean> clause) {
@@ -141,4 +182,5 @@ public interface Condition {
      */
     @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
     void otherwiseThrow(Exception exception) throws Exception;
+
 }

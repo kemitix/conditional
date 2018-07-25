@@ -64,4 +64,14 @@ final class TrueCondition implements Condition {
         // do nothing
     }
 
+    @Override
+    public boolean isTrue() {
+        return true;
+    }
+
+    @Override
+    public boolean isFalse() {
+        return false;
+    }
+
 }
