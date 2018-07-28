@@ -180,11 +180,14 @@
 
     final String result = Value.where(isTrue(), () -> TRUE, () -> FALSE);
 
+    final String result = Value.where(Condition.where(isTrue), () -> TRUE, () -> FALSE);
+
     final Optional<String> result = Value.where(isTrue(), () -> TRUE);
 
     final String result = Value.<String>where(isTrue())
-                               .then(() -> TRUE)
-                               .otherwise(() -> FALSE);
+                               .not()
+                               .then(() -> FALSE)
+                               .otherwise(() -> TRUE);
     #+END_SRC
 
 
