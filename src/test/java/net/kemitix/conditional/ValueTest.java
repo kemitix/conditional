@@ -1,17 +1,16 @@
 package net.kemitix.conditional;
 
 import lombok.val;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
-public class ValueTest {
+public class ValueTest implements WithAssertions {
 
     private static final String TRUE = "true";
     private static final String FALSE = "false";
@@ -159,7 +158,7 @@ public class ValueTest {
     }
 
     @Test
-    public void valueWhereNotFalseIsTrue_deprecated() {
+    public void deprecatedValueWhereNotFalseIsTrue() {
         //when
         val result = Value.<String>whereNot(false).then(() -> TRUE)
                 .otherwise(() -> FALSE);
@@ -237,7 +236,7 @@ public class ValueTest {
     }
 
     @Test
-    public void valueWhereFalseOrNotTrueIsFalse_deprecated() {
+    public void deprecatedValueWhereFalseOrNotTrueIsFalse() {
         //when
         val result = Value.<String>where(FALSE_CONDITION).orNot(() -> true)
                 .then(() -> TRUE)
