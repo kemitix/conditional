@@ -188,22 +188,6 @@
     #+END_SRC
 
 
-*** if-not-then-else
-
-    #+BEGIN_SRC java
-    String result;
-    if (!isTrue()) {
-        result = TRUE;
-    } else {
-        result = FALSE;
-    }
-
-    final String result = Value.<String>whereNot(isTrue())
-                               .then(() -> TRUE)
-                               .otherwise(() -> FALSE);
-    #+END_SRC
-
-
 *** if-and-then-else
 
     #+BEGIN_SRC java
@@ -216,23 +200,6 @@
 
     final String result = Value.<String>where(isTrue())
                                .and(() -> alternativeIsTrue())
-                               .then(() -> TRUE)
-                               .otherwise(() -> FALSE);
-    #+END_SRC
-
-
-*** if-and-not-then-else
-
-    #+BEGIN_SRC java
-    String result;
-    if (isTrue() && !alternativeIsFalse()) {
-        result = TRUE;
-    } else {
-        result = FALSE;
-    }
-
-    final String result = Value.<String>where(isTrue())
-                               .andNot(() -> alternativeIsFalse())
                                .then(() -> TRUE)
                                .otherwise(() -> FALSE);
     #+END_SRC

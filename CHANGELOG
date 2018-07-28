@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.7.0
+-----
+
+* Deprecate `Value.andNot(Supplier)`
+
 0.6.0
 -----
 

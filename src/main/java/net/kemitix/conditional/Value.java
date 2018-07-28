@@ -181,9 +181,11 @@ public interface Value {
          *
          * @param clause the condition to test
          * @return a true or false value clause
+         * @deprecated use {@link #and(Supplier)}.{@link #not()}
          */
+        @Deprecated
         default ValueClause<T> andNot(final Supplier<Boolean> clause) {
-            return and(() -> !clause.get());
+            return and(clause).not();
         }
 
         /**
