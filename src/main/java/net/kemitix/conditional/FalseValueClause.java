@@ -28,12 +28,16 @@ import java.util.function.Supplier;
  * An intermediate state where the clause has evaluated to false.
  *
  * @param <T> the type of the value
- *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
 class FalseValueClause<T> implements Value.ValueClause<T> {
 
     protected static final Value.ValueClause<?> FALSE = new FalseValueClause<>();
+
+    @Override
+    public Value.ValueClause<T> not() {
+        return Value.where(true);
+    }
 
     @Override
     public ValueSupplier<T> then(final Supplier<T> trueSupplier) {
