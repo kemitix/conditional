@@ -1,5 +1,6 @@
 * Conditional
 
+
 ** Functional Condition and Value.
 
    [[https://oss.sonatype.org/content/repositories/releases/net/kemitix/conditional][file:https://img.shields.io/nexus/r/https/oss.sonatype.org/net.kemitix/conditional.svg?style=for-the-badge]]

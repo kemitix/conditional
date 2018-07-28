@@ -134,7 +134,7 @@ public interface Value {
      */
     @Deprecated
     static <T> ValueClause<T> whereNot(final boolean clause) {
-        return where(!clause);
+        return Value.<T>where(clause).not();
     }
 
     /**
