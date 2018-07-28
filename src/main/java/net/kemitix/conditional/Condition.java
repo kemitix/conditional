@@ -21,6 +21,7 @@
 
 package net.kemitix.conditional;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -183,4 +184,13 @@ public interface Condition {
     @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
     void otherwiseThrow(Exception exception) throws Exception;
 
+    /**
+     * Apply the function to the Condtion, resulting an another Condition.
+     *
+     * @param f the function to apply
+     * @return a new Condition
+     */
+    default Condition flatMap(final Function<Boolean, Condition> f) {
+        return f.apply(isTrue());
+    }
 }
