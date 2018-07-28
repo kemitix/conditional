@@ -4,12 +4,22 @@ CHANGELOG
 0.6.0
 -----
 
+* Remove `.travis-support`
+* Add `Condition.isTrue()`
+* Add `Condition.isFalse()`
+* Add `Condition.not()`
 * Add `Condition.and(Condition)`
 * Add `Condition.or(Condition)`
 * Add `Condition.not()`
 * Deprecate `Condition.whereNot(boolean)`
 * Deprecate `Condition.andNot(boolean)`
 * Deprecate `Condition.orNot(boolean)`
+* Add `Condition.flatMap(Function<Boolean, Condition>)` to make `Condition` a monad
+* Add `Value.where(Condition, Supplier, Supplier)`
+* Add `Value.where(Condition, Supplier)`
+* Add `Value.where(Condition)`
+* Deprecate `Value.whereNot(boolean)`
+* Add `ValueClause.not()`
 
 0.5.0
 -----
