@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+0.6.0
+-----
+
+* Add `Condition.and(Condition)`
+* Add `Condition.or(Condition)`
+* Add `Condition.not()`
+* Deprecate `Condition.whereNot(boolean)`
+* Deprecate `Condition.andNot(boolean)`
+* Deprecate `Condition.orNot(boolean)`
+
 0.5.0
 -----
 

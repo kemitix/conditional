@@ -30,12 +30,16 @@ import java.util.function.Supplier;
  * An intermediate state where the clause has evaluated to true.
  *
  * @param <T> the type of the value
- *
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
 class TrueValueClause<T> implements Value.ValueClause<T> {
 
     protected static final Value.ValueClause<?> TRUE = new TrueValueClause<>();
+
+    @Override
+    public Value.ValueClause<T> not() {
+        return Value.where(false);
+    }
 
     @Override
     public ValueSupplier<T> then(final Supplier<T> trueSupplier) {

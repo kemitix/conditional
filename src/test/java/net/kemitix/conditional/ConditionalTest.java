@@ -13,12 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ConditionalTest implements WithAssertions {
 
     private Action thenResponse;
-
     private Action otherwiseResponse;
-
     private boolean thenFlag;
-
     private boolean otherwiseFlag;
+    private final org.assertj.core.api.Condition<? super Condition> trueCondition =
+            new org.assertj.core.api.Condition<>(Condition::isTrue, "is true");
+    private final org.assertj.core.api.Condition<? super Condition> falseCondition =
+            new org.assertj.core.api.Condition<>(Condition::isFalse, "is false");
 
     @Before
     public void setUp() {
@@ -342,5 +343,103 @@ public class ConditionalTest implements WithAssertions {
                 Condition.where(true)
                         .otherwiseThrow(new IOException()))
                 .doesNotThrowAnyException();
+    }
+
+    @Test
+    public void whereTrueConditionAndTrueConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereTrueConditionAndFalseConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereFalseConditionAndTrueConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereFalseConditionAndFalseConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.and(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereTrueConditionOrTrueConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereTrueConditionOrFalseConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(true);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereFalseConditionOrTrueConditionThenTrueCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(true);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(trueCondition);
+    }
+
+    @Test
+    public void whereFalseConditionOrFalseConditionThenFalseCondition() {
+        //given
+        final Condition condition1 = Condition.where(false);
+        final Condition condition2 = Condition.where(false);
+        //when
+        final Condition result = condition1.or(condition2);
+        //then
+        assertThat(result).is(falseCondition);
+    }
+
+    @Test
+    public void whereTrueWhenNotThenFalse() {
+        assertThat(Condition.where(true).not()).is(falseCondition);
+    }
+
+    @Test
+    public void whereFalseWhenNotThenTriue() {
+        assertThat(Condition.where(false).not()).is(trueCondition);
     }
 }

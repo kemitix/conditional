@@ -38,33 +38,63 @@ public interface Value {
      * @param trueSupplier  The supplier to provide the value when the clause is true
      * @param falseSupplier The supplier to provide the value when the clause is false
      * @param <T>           The type of the value
-     *
      * @return the value from either the trueSupplier or the falseSupplier
      */
-    @SuppressWarnings("PMD.LawOfDemeter")
     static <T> T where(
             final boolean clause,
             final Supplier<T> trueSupplier,
             final Supplier<T> falseSupplier
-                      ) {
-        return Value.<T>where(clause).then(trueSupplier)
-                                     .otherwise(falseSupplier);
+    ) {
+        return Value.<T>where(clause)
+                .then(trueSupplier)
+                .otherwise(falseSupplier);
+    }
+
+    /**
+     * Return one of two values depending on the value of a clause.
+     *
+     * @param clause        The deciding clause
+     * @param trueSupplier  The supplier to provide the value when the clause is true
+     * @param falseSupplier The supplier to provide the value when the clause is false
+     * @param <T>           The type of the value
+     * @return the value from either the trueSupplier or the falseSupplier
+     */
+    static <T> T where(
+            final Condition clause,
+            final Supplier<T> trueSupplier,
+            final Supplier<T> falseSupplier
+    ) {
+        return Value.<T>where(clause.isTrue(), trueSupplier, falseSupplier);
     }
 
     /**
      * Return an Optional either containing a value, if the clause is true, or empty.
      *
-     * @param clause        The deciding clause
-     * @param trueSupplier  The supplier to provide the value when the clause is true
-     * @param <T>           The type of the value
-     *
+     * @param clause       The deciding clause
+     * @param trueSupplier The supplier to provide the value when the clause is true
+     * @param <T>          The type of the value
      * @return an Optional either containing the value from the trueSupplier or empty
      */
     static <T> Optional<T> where(
             final boolean clause,
             final Supplier<T> trueSupplier
-                                ) {
+    ) {
         return Optional.ofNullable(Value.where(clause, trueSupplier, () -> null));
+    }
+
+    /**
+     * Return an Optional either containing a value, if the clause is true, or empty.
+     *
+     * @param clause       The deciding clause
+     * @param trueSupplier The supplier to provide the value when the clause is true
+     * @param <T>          The type of the value
+     * @return an Optional either containing the value from the trueSupplier or empty
+     */
+    static <T> Optional<T> where(
+            final Condition clause,
+            final Supplier<T> trueSupplier
+    ) {
+        return Value.where(clause.isTrue(), trueSupplier);
     }
 
     /**
@@ -72,7 +102,6 @@ public interface Value {
      *
      * @param clause the condition to test
      * @param <T>    the type of the value
-     *
      * @return a true or false value clause
      */
     @SuppressWarnings("unchecked")
@@ -84,13 +113,26 @@ public interface Value {
     }
 
     /**
+     * Create a new {@link ValueClause} for the clause.
+     *
+     * @param clause the condition to test
+     * @param <T>    the type of the value
+     * @return a true or false value clause
+     */
+    @SuppressWarnings("unchecked")
+    static <T> ValueClause<T> where(final Condition clause) {
+        return Value.where(clause.isTrue());
+    }
+
+    /**
      * Create a new {@link ValueClause} for the boolean opposite of the clause.
      *
      * @param clause the condition to test
      * @param <T>    the type of the value
-     *
      * @return a true or false value clause
+     * @deprecated use {@link #where(boolean)}.{@link ValueClause#not()}
      */
+    @Deprecated
     static <T> ValueClause<T> whereNot(final boolean clause) {
         return where(!clause);
     }
@@ -103,10 +145,16 @@ public interface Value {
     /* default */ interface ValueClause<T> {
 
         /**
+         * Negate the Value.
+         *
+         * @return a new ValueClause with a negated value
+         */
+        ValueClause<T> not();
+
+        /**
          * Create a {@link ValueSupplier} with the {@link Supplier} should the {@link ValueClause} be true.
          *
          * @param trueSupplier the Supplier for the true value
-         *
          * @return the value supplier
          */
         ValueSupplier<T> then(Supplier<T> trueSupplier);
@@ -115,7 +163,6 @@ public interface Value {
          * Logically AND combine the current {@link ValueClause} with clause.
          *
          * @param clause the condition to test
-         *
          * @return a true or false value clause
          */
         ValueClause<T> and(Supplier<Boolean> clause);
@@ -124,7 +171,6 @@ public interface Value {
          * Logically OR combine the current {@link ValueClause} with clause.
          *
          * @param clause the condition to test
-         *
          * @return a true or false value clause
          */
         @SuppressWarnings("PMD.ShortMethodName")
@@ -134,7 +180,6 @@ public interface Value {
          * Logically AND combine the current {@link ValueClause} with boolean opposite of the clause.
          *
          * @param clause the condition to test
-         *
          * @return a true or false value clause
          */
         default ValueClause<T> andNot(final Supplier<Boolean> clause) {
@@ -145,7 +190,6 @@ public interface Value {
          * Logically OR combine the current {@link ValueClause} with boolean opposite of the clause.
          *
          * @param clause the condition to test
-         *
          * @return a true or false value clause
          */
         default ValueClause<T> orNot(final Supplier<Boolean> clause) {
@@ -163,7 +207,6 @@ public interface Value {
              * Determine the value by whether the {@link ValueClause} was true or false.
              *
              * @param falseSupplier the Supplier for the false value
-             *
              * @return the value
              */
             T otherwise(Supplier<T> falseSupplier);
