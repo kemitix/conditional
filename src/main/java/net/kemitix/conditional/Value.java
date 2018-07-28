@@ -134,7 +134,7 @@ public interface Value {
      */
     @Deprecated
     static <T> ValueClause<T> whereNot(final boolean clause) {
-        return where(!clause);
+        return Value.<T>where(clause).not();
     }
 
     /**
@@ -181,9 +181,11 @@ public interface Value {
          *
          * @param clause the condition to test
          * @return a true or false value clause
+         * @deprecated use {@link #and(Supplier)}.{@link #not()}
          */
+        @Deprecated
         default ValueClause<T> andNot(final Supplier<Boolean> clause) {
-            return and(() -> !clause.get());
+            return and(clause).not();
         }
 
         /**
