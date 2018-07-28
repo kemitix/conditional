@@ -7,8 +7,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static net.kemitix.conditional.Condition.where;
-
 /**
  * @author Paul Campbell (pcampbell@kemitix.net).
  */
@@ -80,7 +78,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueThenDoSomethingAndThenDoSomethingElse() {
         //when
-        where(true)
+        Condition.where(true)
                 .then(thenResponse)
                 .and(() -> true)
                 .then(otherwiseResponse);
@@ -142,7 +140,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueAndNotFalseThenRuns() {
         //when
-        where(true)
+        Condition.where(true)
                 .andNot(() -> false)
                 .then(thenResponse);
         //then
@@ -152,7 +150,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueAndNotTrueThenOtherwiseRuns() {
         //when
-        where(true)
+        Condition.where(true)
                 .andNot(() -> true)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -163,7 +161,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseOrNotFalseThenRuns() {
         //when
-        where(false)
+        Condition.where(false)
                 .orNot(() -> false)
                 .then(thenResponse);
         //then
@@ -173,7 +171,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseOrNotTrueThenOtherwiseRuns() {
         //when
-        where(false)
+        Condition.where(false)
                 .orNot(() -> true)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -184,7 +182,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseElseTrueThenOtherwiseRuns() {
         //when
-        where(false)
+        Condition.where(false)
                 .then(thenResponse)
                 .otherwise(() -> true)
                 .then(otherwiseResponse);
@@ -195,7 +193,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseElseFalseThenNothingRuns() {
         //when
-        where(false)
+        Condition.where(false)
                 .then(thenResponse)
                 .otherwise(() -> false)
                 .then(otherwiseResponse);
@@ -206,7 +204,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueChainedThensBothRuns() {
         //when
-        where(true)
+        Condition.where(true)
                 .then(thenResponse)
                 .then(otherwiseResponse);
         //then
@@ -216,7 +214,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseChainedThensNothingRuns() {
         //when
-        where(false)
+        Condition.where(false)
                 .then(thenResponse)
                 .then(otherwiseResponse);
         //then
@@ -264,7 +262,7 @@ public class ConditionalTest implements WithAssertions {
     }
 
     private void when(final boolean clause) {
-        where(clause)
+        Condition.where(clause)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
     }
@@ -273,7 +271,7 @@ public class ConditionalTest implements WithAssertions {
             final boolean firstClause,
             final boolean secondClause
     ) {
-        where(firstClause)
+        Condition.where(firstClause)
                 .and(() -> secondClause)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -283,7 +281,7 @@ public class ConditionalTest implements WithAssertions {
             final boolean firstClause,
             final boolean secondClause
     ) {
-        where(firstClause)
+        Condition.where(firstClause)
                 .or(() -> secondClause)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
@@ -294,7 +292,7 @@ public class ConditionalTest implements WithAssertions {
         //given
         final AtomicInteger atomicInteger = new AtomicInteger();
         //when
-        where(true)
+        Condition.where(true)
                 .or(() -> atomicInteger.compareAndSet(0, 2))
                 .then(thenResponse);
         //then
@@ -307,7 +305,7 @@ public class ConditionalTest implements WithAssertions {
         //given
         final AtomicInteger atomicInteger = new AtomicInteger();
         //when
-        where(false)
+        Condition.where(false)
                 .and(() -> atomicInteger.compareAndSet(0, 2))
                 .then(thenResponse);
         //then
@@ -319,14 +317,14 @@ public class ConditionalTest implements WithAssertions {
     public void whereTrueThenThrowException() {
         //given
         assertThatExceptionOfType(IOException.class)
-                .isThrownBy(() -> where(true)
+                .isThrownBy(() -> Condition.where(true)
                         .thenThrow(new IOException()));
     }
 
     @Test
     public void whereFalseThenDoNotThrowException() throws Exception {
         assertThatCode(() ->
-                where(false)
+                Condition.where(false)
                         .thenThrow(new IOException()))
                 .doesNotThrowAnyException();
     }
@@ -335,14 +333,14 @@ public class ConditionalTest implements WithAssertions {
     public void whereFalseOtherwiseThenThrowException() {
         //given
         assertThatExceptionOfType(IOException.class)
-                .isThrownBy(() -> where(false)
+                .isThrownBy(() -> Condition.where(false)
                         .otherwiseThrow(new IOException()));
     }
 
     @Test
     public void whereTrueOtherwiseThenDoNotThrowException() throws Exception {
         assertThatCode(() ->
-                where(true)
+                Condition.where(true)
                         .otherwiseThrow(new IOException()))
                 .doesNotThrowAnyException();
     }
