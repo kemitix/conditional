@@ -72,6 +72,28 @@
     #+END_SRC
 
 
+*** isTrue() / isFalse() / not()
+
+    #+BEGIN_SRC java
+    final Condition condition = Condition.where(isTrue());
+    final boolean isTrue = condition.isTrue();
+    final boolean isFalse = condition.isFalse();
+    final Condition not = condition.not();
+    final Condition andCondition1 = condition.and(Condition.where(isAlsoTrue()));
+    final Condition andCondition2 = condition.and(isAlsoTrue());
+    final Condition orCondition1 = condition.or(Condition.where(isAlsoTrue()));
+    final Condition orCondition2 = condition.or(isAlsoTrue());
+    #+END_SRC
+
+
+*** flatMap(Function<Boolean, Condition>)
+
+    #+BEGIN_SRC java
+    final Condition condition = Condition.where(isTrue())
+                                         .flatMap(b -> Condition.where(b));
+    #+END_SRC
+
+
 *** if-and-then-else
 
     #+BEGIN_SRC java
@@ -99,53 +121,6 @@
 
     Condition.where(isTrue())
              .or(() -> alternativeIsTrue())
-             .then(() -> doSomething())
-             .otherwise(() -> doSomethingElse());
-    #+END_SRC
-
-
-*** if-not-then-else
-
-    #+BEGIN_SRC java
-    if (!isFalse()) {
-        doSomething();
-    } else {
-        doSomethingElse();
-    }
-
-    Condition.whereNot(isFalse())
-             .then(() -> doSomething())
-             .otherwise(() -> doSomethingElse());
-    #+END_SRC
-
-
-*** if-and-not-then-else
-
-    #+BEGIN_SRC java
-    if (isTrue() || !isFalse()) {
-        doSomething();
-    } else {
-        doSomethingElse();
-    }
-
-    Condition.where(isTrue())
-             .andNot(() -> isFalse())
-             .then(() -> doSomething())
-             .otherwise(() -> doSomethingElse());
-    #+END_SRC
-
-
-*** if-or-not-then-else
-
-    #+BEGIN_SRC java
-    if (isFalse() || !isAlsoFalse()) {
-        doSomething();
-    } else {
-        doSomethingElse();
-    }
-
-    Condition.where(isFalse())
-             .orNot(() -> isAlsoFalse())
              .then(() -> doSomething())
              .otherwise(() -> doSomethingElse());
     #+END_SRC
