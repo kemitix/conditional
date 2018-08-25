@@ -53,7 +53,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereClauseIsTrue() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).then(() -> TRUE)
+        final val result = Value.<String>where(TRUE_CONDITION).then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
@@ -62,7 +62,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereClauseIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).then(() -> TRUE)
+        final val result = Value.<String>where(FALSE_CONDITION).then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
@@ -71,7 +71,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueAndTrueIsTrue() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).and(() -> true)
+        final val result = Value.<String>where(TRUE_CONDITION).and(() -> true)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -81,7 +81,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueAndFalseIsFalse() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).and(() -> false)
+        final val result = Value.<String>where(TRUE_CONDITION).and(() -> false)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -91,7 +91,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseAndTrueIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).and(() -> true)
+        final val result = Value.<String>where(FALSE_CONDITION).and(() -> true)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -101,7 +101,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseAndFalseIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).and(() -> false)
+        final val result = Value.<String>where(FALSE_CONDITION).and(() -> false)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -111,7 +111,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueOrTrueIsTrue() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).or(() -> true)
+        final val result = Value.<String>where(TRUE_CONDITION).or(() -> true)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -121,7 +121,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueOrFalseIsTrue() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).or(() -> false)
+        final val result = Value.<String>where(TRUE_CONDITION).or(() -> false)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -131,7 +131,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseOrTrueIsTrue() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).or(() -> true)
+        final val result = Value.<String>where(FALSE_CONDITION).or(() -> true)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -141,7 +141,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseOrFalseIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).or(() -> false)
+        final val result = Value.<String>where(FALSE_CONDITION).or(() -> false)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -151,7 +151,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereNotTrueIsFalse() {
         //when
-        val result = Value.<String>whereNot(true).then(() -> TRUE)
+        final val result = Value.<String>where(true).not().then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(FALSE);
@@ -160,7 +160,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void deprecatedValueWhereNotFalseIsTrue() {
         //when
-        val result = Value.<String>whereNot(false).then(() -> TRUE)
+        final val result = Value.<String>where(false).not().then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
@@ -169,7 +169,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereNotFalseIsTrue() {
         //when
-        val result = Value.<String>where(false).not().then(() -> TRUE)
+        final val result = Value.<String>where(false).not().then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
         assertThat(result).isEqualTo(TRUE);
@@ -178,7 +178,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueAndNotTrueIsFalse() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).andNot(() -> true)
+        final val result = Value.<String>where(TRUE_CONDITION).and(() -> true).not()
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -188,7 +188,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueAndNotFalseIsTrue() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).andNot(() -> false)
+        final val result = Value.<String>where(TRUE_CONDITION).and(() -> false).not()
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -198,7 +198,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseAndNotTrueIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).and(() -> true)
+        final val result = Value.<String>where(FALSE_CONDITION).and(() -> true)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -208,7 +208,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseAndNotFalseIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).and(() -> false)
+        final val result = Value.<String>where(FALSE_CONDITION).and(() -> false)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -218,7 +218,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueOrNotTrueIsTrue() {
         //when
-        val result = Value.<String>where(true).orNot(() -> true)
+        final val result = Value.<String>where(true).orNot(() -> true)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -228,7 +228,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereTrueOrNotFalseIsTrue() {
         //when
-        val result = Value.<String>where(TRUE_CONDITION).orNot(() -> false)
+        final val result = Value.<String>where(TRUE_CONDITION).orNot(() -> false)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -238,7 +238,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void deprecatedValueWhereFalseOrNotTrueIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).orNot(() -> true)
+        final val result = Value.<String>where(FALSE_CONDITION).orNot(() -> true)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -248,7 +248,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseOrNotTrueIsFalse() {
         //when
-        val result = Value.<String>where(FALSE_CONDITION).or(() -> true).not()
+        final val result = Value.<String>where(FALSE_CONDITION).or(() -> true).not()
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -258,7 +258,7 @@ public class ValueTest implements WithAssertions {
     @Test
     public void valueWhereFalseOrNotFalseIsTrue() {
         //when
-        val result = Value.<String>where(false).orNot(() -> false)
+        final val result = Value.<String>where(false).orNot(() -> false)
                 .then(() -> TRUE)
                 .otherwise(() -> FALSE);
         //then
@@ -307,5 +307,14 @@ public class ValueTest implements WithAssertions {
         //then
         assertThat(result).isEmpty();
         assertThat(atomicInteger).hasValue(0);
+    }
+
+    @Test
+    public void deprecatedAndNot() {
+        //when
+        final String result = Value.<String>where(TRUE_CONDITION).andNot(() -> false)
+                .then(() -> TRUE).otherwise(() -> FALSE);
+        //then
+        assertThat(result).isSameAs(TRUE);
     }
 }

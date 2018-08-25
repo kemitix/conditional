@@ -125,19 +125,6 @@ public interface Value {
     }
 
     /**
-     * Create a new {@link ValueClause} for the boolean opposite of the clause.
-     *
-     * @param clause the condition to test
-     * @param <T>    the type of the value
-     * @return a true or false value clause
-     * @deprecated use {@link #where(boolean)}.{@link ValueClause#not()}
-     */
-    @Deprecated
-    static <T> ValueClause<T> whereNot(final boolean clause) {
-        return Value.<T>where(clause).not();
-    }
-
-    /**
      * An intermediate state in determining the final {@link Value}.
      *
      * @param <T> the type of the value

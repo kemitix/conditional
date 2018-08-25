@@ -4,7 +4,17 @@ CHANGELOG
 0.7.0
 -----
 
-* Deprecate `Value.andNot(Supplier)`
+* Deprecate Value.andNot(Supplier)
+* pom: Remove redundant properties
+* Remove deprecated methods
+* pom: rearrange entries
+* Bump assertj-core from 3.10.0 to 3.11.0
+* Bump lombok from 1.18.0 to 1.18.2
+* Bump tiles-maven-plugin from 2.11 to 2.12
+* README: update Value examples
+* README: update Condition examples
+* Value: cleanup deprecated whereNot()
+* README: convert to orgmode format
 
 0.6.0
 -----
