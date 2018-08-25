@@ -46,18 +46,6 @@ public interface Condition {
     }
 
     /**
-     * Create a new {@code Condition} for the boolean opposite of the clause.
-     *
-     * @param clause the condition to test
-     * @return the Condition
-     * @deprecated use {@link #not()}
-     */
-    @Deprecated
-    static Condition whereNot(final boolean clause) {
-        return where(clause).not();
-    }
-
-    /**
      * Checks if the Condition is true or not.
      *
      * @return true if the Condition is true
@@ -99,18 +87,6 @@ public interface Condition {
     }
 
     /**
-     * Logically AND combine the current {@code Condition} with boolean opposite of the clause.
-     *
-     * @param clause the condition to test
-     * @return the Condition
-     * @deprecated use {@link #not()}
-     */
-    @Deprecated
-    default Condition andNot(final Supplier<Boolean> clause) {
-        return and(clause).not();
-    }
-
-    /**
      * Logically OR combine the current {@code Condition} with the clause.
      *
      * @param clause the condition to test
@@ -127,18 +103,6 @@ public interface Condition {
      */
     default Condition or(Condition other) {
         return where(isTrue()).or(other::isTrue);
-    }
-
-    /**
-     * Logically OR combine the current {@code Condition} with the boolean opposite of the clause.
-     *
-     * @param clause the condition to test
-     * @return the Condition
-     * @deprecated use {@link #not()}
-     */
-    @Deprecated
-    default Condition orNot(final Supplier<Boolean> clause) {
-        return or(clause).not();
     }
 
     /**

@@ -121,7 +121,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereNotFalseThenRuns() {
         //when
-        Condition.whereNot(false)
+        Condition.where(false).not()
                 .then(thenResponse);
         //then
         assertThatTheThenResponseRuns();
@@ -130,7 +130,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereNotTrueThenOtherwiseRuns() {
         //when
-        Condition.whereNot(true)
+        Condition.where(true).not()
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
         //then
@@ -141,7 +141,7 @@ public class ConditionalTest implements WithAssertions {
     public void whereTrueAndNotFalseThenRuns() {
         //when
         Condition.where(true)
-                .andNot(() -> false)
+                .and(() -> false).not()
                 .then(thenResponse);
         //then
         assertThatTheThenResponseRuns();
@@ -151,7 +151,7 @@ public class ConditionalTest implements WithAssertions {
     public void whereTrueAndNotTrueThenOtherwiseRuns() {
         //when
         Condition.where(true)
-                .andNot(() -> true)
+                .and(() -> true).not()
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
         //then
@@ -162,7 +162,7 @@ public class ConditionalTest implements WithAssertions {
     public void whereFalseOrNotFalseThenRuns() {
         //when
         Condition.where(false)
-                .orNot(() -> false)
+                .or(() -> false).not()
                 .then(thenResponse);
         //then
         assertThatTheThenResponseRuns();
@@ -172,7 +172,7 @@ public class ConditionalTest implements WithAssertions {
     public void whereFalseOrNotTrueThenOtherwiseRuns() {
         //when
         Condition.where(false)
-                .orNot(() -> true)
+                .or(() -> true).not()
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
         //then
