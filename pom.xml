@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>conditional</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.7.0</version>
 
     <properties>
         <kemitix-checkstyle.version>4.1.1</kemitix-checkstyle.version>
