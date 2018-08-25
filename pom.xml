@@ -3,6 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.kemitix</groupId>
+        <artifactId>kemitix-parent</artifactId>
+        <version>5.1.1</version>
+        <relativePath/>
+    </parent>
+
+    <artifactId>conditional</artifactId>
+    <version>DEV-SNAPSHOT</version>
+
     <properties>
         <kemitix-checkstyle.version>4.1.1</kemitix-checkstyle.version>
         <kemitix.checkstyle.ruleset.level>5-complexity</kemitix.checkstyle.ruleset.level>
@@ -18,15 +28,6 @@
         <kemitix-tiles.version>0.9.0</kemitix-tiles.version>
         <lombok.version>1.18.2</lombok.version>
     </properties>
-
-    <parent>
-        <groupId>net.kemitix</groupId>
-        <artifactId>kemitix-parent</artifactId>
-        <version>5.1.1</version>
-        <relativePath/>
-    </parent>
-    <artifactId>conditional</artifactId>
-    <version>DEV-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
