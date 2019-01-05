@@ -1,247 +1,243 @@
 * Conditional
 
+* Functional Condition and Value.
 
-** Functional Condition and Value.
   [[https://oss.sonatype.org/content/repositories/releases/net/kemitix/conditional][file:https://img.shields.io/nexus/r/https/oss.sonatype.org/net.kemitix/conditional.svg?style=for-the-badge]]
   [[https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.kemitix%22%20AND%20a%3A%22conditional%22][file:https://img.shields.io/maven-central/v/net.kemitix/conditional.svg?style=for-the-badge]]
   [[http://i.jpeek.org/net.kemitix/conditional/index.html][file:http://i.jpeek.org/net.kemitix/conditional/badge.svg]]
 
+* Maven
 
+ #+BEGIN_SRC xml
+ <dependency>
+     <groupId>net.kemitix</groupId>
+     <artifactId>conditional</artifactId>
+     <version>RELEASE</version>
+ </dependency>
+ #+END_SRC
 
+ The latest version should be shown above with the nexus and maven-central
+ badges or can be found on [[https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.kemitix%22%20AND%20a%3A%22mon%22][Maven Central]].
 
 
-** Maven
+* Condition
 
-  #+BEGIN_SRC xml
-  <dependency>
-      <groupId>net.kemitix</groupId>
-      <artifactId>conditional</artifactId>
-      <version>RELEASE</version>
-  </dependency>
-  #+END_SRC
+  The `if ... then` and `if ... then ... else` constructs can't be used in a
+  lambda without being wrapped in a code block.
 
-  The latest version should be shown above with the nexus and maven-central
-  badges or can be found on [[https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.kemitix%22%20AND%20a%3A%22mon%22][Maven Central]].
+  Using `Condition` allows the use of an if-style expression without needing to
+  wrap it in a code block
 
 
-** Condition
+** if-then
 
-   The `if ... then` and `if ... then ... else` constructs can't be used in a
-   lambda without being wrapped in a code block.
+   #+BEGIN_SRC java
+   if (isTrue()) {
+       doSomething();
+   }
 
-   Using `Condition` allows the use of an if-style expression without needing to
-   wrap it in a code block
+   Condition.where(isTrue())
+            .then(() -> doSomething());
+   #+END_SRC
 
 
-*** if-then
+** if-then-else
 
-    #+BEGIN_SRC java
-    if (isTrue()) {
-        doSomething();
-    }
+   #+BEGIN_SRC java
+   if (isTrue()) {
+       doSomething();
+   } else {
+       doSomethingElse();
+   }
 
-    Condition.where(isTrue())
-             .then(() -> doSomething());
-    #+END_SRC
+   Condition.where(isTrue())
+            .then(() -> doSomething())
+            .otherwise(() -> doSomethingElse());
+   #+END_SRC
 
 
-*** if-then-else
+** isTrue() / isFalse() / not()
 
-    #+BEGIN_SRC java
-    if (isTrue()) {
-        doSomething();
-    } else {
-        doSomethingElse();
-    }
+   #+BEGIN_SRC java
+   final Condition condition = Condition.where(isTrue());
+   final boolean isTrue = condition.isTrue();
+   final boolean isFalse = condition.isFalse();
+   final Condition not = condition.not();
+   final Condition andCondition1 = condition.and(Condition.where(isAlsoTrue()));
+   final Condition andCondition2 = condition.and(isAlsoTrue());
+   final Condition orCondition1 = condition.or(Condition.where(isAlsoTrue()));
+   final Condition orCondition2 = condition.or(isAlsoTrue());
+   #+END_SRC
 
-    Condition.where(isTrue())
-             .then(() -> doSomething())
-             .otherwise(() -> doSomethingElse());
-    #+END_SRC
 
+** flatMap(Function<Boolean, Condition>)
 
-*** isTrue() / isFalse() / not()
+   #+BEGIN_SRC java
+   final Condition condition = Condition.where(isTrue())
+                                        .flatMap(b -> Condition.where(b));
+   #+END_SRC
 
-    #+BEGIN_SRC java
-    final Condition condition = Condition.where(isTrue());
-    final boolean isTrue = condition.isTrue();
-    final boolean isFalse = condition.isFalse();
-    final Condition not = condition.not();
-    final Condition andCondition1 = condition.and(Condition.where(isAlsoTrue()));
-    final Condition andCondition2 = condition.and(isAlsoTrue());
-    final Condition orCondition1 = condition.or(Condition.where(isAlsoTrue()));
-    final Condition orCondition2 = condition.or(isAlsoTrue());
-    #+END_SRC
 
+** if-and-then-else
 
-*** flatMap(Function<Boolean, Condition>)
+   #+BEGIN_SRC java
+   if (isTrue() && isAlsoTrue()) {
+       doSomething();
+   } else {
+       doSomethingElse();
+   }
 
-    #+BEGIN_SRC java
-    final Condition condition = Condition.where(isTrue())
-                                         .flatMap(b -> Condition.where(b));
-    #+END_SRC
+   Condition.where(isTrue())
+            .and(() -> isAlsoTrue())
+            .then(() -> doSomething())
+            .otherwise(() -> doSomethingElse());
+   #+END_SRC
 
 
-*** if-and-then-else
+** if-or-then-else
 
-    #+BEGIN_SRC java
-    if (isTrue() && isAlsoTrue()) {
-        doSomething();
-    } else {
-        doSomethingElse();
-    }
+   #+BEGIN_SRC java
+   if (isTrue() || alternativeIsTrue()) {
+       doSomething();
+   } else {
+       doSomethingElse();
+   }
 
-    Condition.where(isTrue())
-             .and(() -> isAlsoTrue())
-             .then(() -> doSomething())
-             .otherwise(() -> doSomethingElse());
-    #+END_SRC
+   Condition.where(isTrue())
+            .or(() -> alternativeIsTrue())
+            .then(() -> doSomething())
+            .otherwise(() -> doSomethingElse());
+   #+END_SRC
 
 
-*** if-or-then-else
+** if-then-else-if
 
-    #+BEGIN_SRC java
-    if (isTrue() || alternativeIsTrue()) {
-        doSomething();
-    } else {
-        doSomethingElse();
-    }
+   #+BEGIN_SRC java
+   if (isFalse()) {
+       doSomething();
+   } else if (isTrue()) {
+       doSomethingElse();
+   }
 
-    Condition.where(isTrue())
-             .or(() -> alternativeIsTrue())
-             .then(() -> doSomething())
-             .otherwise(() -> doSomethingElse());
-    #+END_SRC
+   Condition.where(isFalse())
+            .then(() -> doSomething())
+            .otherwise(() -> isTrue())
+            .then(() -> doSomethingElse());
+   #+END_SRC
 
 
-*** if-then-else-if
+** if-then-if-then
 
-    #+BEGIN_SRC java
-    if (isFalse()) {
-        doSomething();
-    } else if (isTrue()) {
-        doSomethingElse();
-    }
+   #+BEGIN_SRC java
+   if (isTrue()) {
+       doSomething();
+       if (isAlsoTrue()) {
+           doSomethingElse();
+       }
+   }
 
-    Condition.where(isFalse())
-             .then(() -> doSomething())
-             .otherwise(() -> isTrue())
-             .then(() -> doSomethingElse());
-    #+END_SRC
+   Condition.where(isTrue())
+            .then(() -> doSomething())
+            .and(() -> isAlsoTrue())
+            .then(() -> doSomethingElse());
+   #+END_SRC
 
 
-*** if-then-if-then
+* Value
 
-    #+BEGIN_SRC java
-    if (isTrue()) {
-        doSomething();
-        if (isAlsoTrue()) {
-            doSomethingElse();
-        }
-    }
+  Values from an if-then-else in a functional-style.
 
-    Condition.where(isTrue())
-             .then(() -> doSomething())
-             .and(() -> isAlsoTrue())
-             .then(() -> doSomethingElse());
-    #+END_SRC
+  Functional, and verbose, alternative to the ternary operator (=?:=).
 
 
-** Value
+** if-then-else
 
-   Values from an if-then-else in a functional-style.
+   #+BEGIN_SRC java
+   String result;
+   if (isTrue()) {
+       result = TRUE;
+   } else {
+       result = FALSE;
+   }
 
-   Functional, and verbose, alternative to the ternary operator (=?:=).
+   String result = isTrue() ? TRUE : FALSE;
 
+   final String result = Value.where(isTrue(), () -> TRUE, () -> FALSE);
 
-*** if-then-else
+   final String result = Value.where(Condition.where(isTrue), () -> TRUE, () -> FALSE);
 
-    #+BEGIN_SRC java
-    String result;
-    if (isTrue()) {
-        result = TRUE;
-    } else {
-        result = FALSE;
-    }
+   final Optional<String> result = Value.where(isTrue(), () -> TRUE);
 
-    String result = isTrue() ? TRUE : FALSE;
+   final String result = Value.<String>where(isTrue())
+                              .not()
+                              .then(() -> FALSE)
+                              .otherwise(() -> TRUE);
+   #+END_SRC
 
-    final String result = Value.where(isTrue(), () -> TRUE, () -> FALSE);
 
-    final String result = Value.where(Condition.where(isTrue), () -> TRUE, () -> FALSE);
+** if-and-then-else
 
-    final Optional<String> result = Value.where(isTrue(), () -> TRUE);
+   #+BEGIN_SRC java
+   String result;
+   if (isTrue() && alternativeIsTrue()) {
+       result = TRUE;
+   } else {
+       result = FALSE;
+   }
 
-    final String result = Value.<String>where(isTrue())
-                               .not()
-                               .then(() -> FALSE)
-                               .otherwise(() -> TRUE);
-    #+END_SRC
+   final String result = Value.<String>where(isTrue())
+                              .and(() -> alternativeIsTrue())
+                              .then(() -> TRUE)
+                              .otherwise(() -> FALSE);
+   #+END_SRC
 
 
-*** if-and-then-else
+** if-or-then-else
 
-    #+BEGIN_SRC java
-    String result;
-    if (isTrue() && alternativeIsTrue()) {
-        result = TRUE;
-    } else {
-        result = FALSE;
-    }
+   #+BEGIN_SRC java
+   String result;
+   if (isTrue() || alternativeIsTrue()) {
+       result = TRUE;
+   } else {
+       result = FALSE;
+   }
 
-    final String result = Value.<String>where(isTrue())
-                               .and(() -> alternativeIsTrue())
-                               .then(() -> TRUE)
-                               .otherwise(() -> FALSE);
-    #+END_SRC
+   final String result = Value.<String>where(isTrue())
+                              .or(() -> alternativeIsTrue())
+                              .then(() -> TRUE)
+                              .otherwise(() -> FALSE);
+   #+END_SRC
 
 
-*** if-or-then-else
+** if-or-not-then-else
 
-    #+BEGIN_SRC java
-    String result;
-    if (isTrue() || alternativeIsTrue()) {
-        result = TRUE;
-    } else {
-        result = FALSE;
-    }
+   #+BEGIN_SRC java
+   String result;
+   if (isTrue() || !isFalse()) {
+   result = TRUE;
+   } else {
+   result = FALSE;
+   }
 
-    final String result = Value.<String>where(isTrue())
-                               .or(() -> alternativeIsTrue())
-                               .then(() -> TRUE)
-                               .otherwise(() -> FALSE);
-    #+END_SRC
+   final String result = Value.<String>where(isTrue())
+                              .orNot(() -> isFalse())
+                              .then(() -> TRUE)
+                              .otherwise(() -> FALSE);
+   #+END_SRC
 
 
-*** if-or-not-then-else
+** if-then
 
-    #+BEGIN_SRC java
-    String result;
-    if (isTrue() || !isFalse()) {
-    result = TRUE;
-    } else {
-    result = FALSE;
-    }
+   #+BEGIN_SRC java
+   Optional<String> result;
+   if (isTrue()) {
+       result = Optional.of(TRUE);
+   } else {
+       result = Optional.empty();
+   }
 
-    final String result = Value.<String>where(isTrue())
-                               .orNot(() -> isFalse())
-                               .then(() -> TRUE)
-                               .otherwise(() -> FALSE);
-    #+END_SRC
-
-
-*** if-then
-
-    #+BEGIN_SRC java
-    Optional<String> result;
-    if (isTrue()) {
-        result = Optional.of(TRUE);
-    } else {
-        result = Optional.empty();
-    }
-
-    final Optional<String> result = Value.<String>where(isTrue())
-                                         .then(() -> TRUE)
-                                         .optional();
-    #+END_SRC
+   final Optional<String> result = Value.<String>where(isTrue())
+                                        .then(() -> TRUE)
+                                        .optional();
+   #+END_SRC
 
