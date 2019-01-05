@@ -1,0 +1,79 @@
+* CHANGELOG
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]], and this project adheres to
+[[https://semver.org/spec/v2.0.0.html][Semantic Versioning]].
+
+* 0.7.1
+
+  - Bump assertj-core from 3.11.0 to 3.11.1 (#38)
+  - Bump kemitix-maven-tiles from 0.9.0 to 1.3.1 (#40)
+  - [jenkins] Compatibility build against java 11 (#40)
+  - Bump kemitix-parent from 5.1.1 to 5.2.0 (#39)
+
+* 0.7.0
+
+  - Deprecate Value.andNot(Supplier)
+  - pom: Remove redundant properties
+  - Remove deprecated methods
+  - pom: rearrange entries
+  - Bump assertj-core from 3.10.0 to 3.11.0
+  - Bump lombok from 1.18.0 to 1.18.2
+  - Bump tiles-maven-plugin from 2.11 to 2.12
+  - README: update Value examples
+  - README: update Condition examples
+  - Value: cleanup deprecated whereNot()
+  - README: convert to orgmode format
+
+* 0.6.0
+
+  - Remove `.travis-support`
+  - Add `Condition.isTrue()`
+  - Add `Condition.isFalse()`
+  - Add `Condition.not()`
+  - Add `Condition.and(Condition)`
+  - Add `Condition.or(Condition)`
+  - Add `Condition.not()`
+  - Deprecate `Condition.whereNot(boolean)`
+  - Deprecate `Condition.andNot(boolean)`
+  - Deprecate `Condition.orNot(boolean)`
+  - Add `Condition.flatMap(Function<Boolean, Condition>)` to make `Condition` a monad
+  - Add `Value.where(Condition, Supplier, Supplier)`
+  - Add `Value.where(Condition, Supplier)`
+  - Add `Value.where(Condition)`
+  - Deprecate `Value.whereNot(boolean)`
+  - Add `ValueClause.not()`
+
+* 0.5.0
+
+  - Add `thenThrow(Exception)`
+  - Add `otherwiseThrow(Exception)`
+
+* 0.4.0
+
+  - Building with Jenkins
+  - Upgrade `kemitix-parent` to 5.0.3
+
+* 0.3.0
+
+  - Add `<T> Value.where(boolean, Supplier<T>, Supplier<T>)`
+  - Add `Optional<T> Value.where(boolean, Supplier<T>)`
+  - Add `.travis-support`
+  - Avoid danger of JVM-level deadlock during `Value` initialisation
+  - Avoid danger of JVM-level deadlock during `Condition` initialisation
+  - Upgrade `kemitix-parent` to 3.2.0
+  - Upgrade `kemitix-checkstyle-parent` to 3.2.0
+  - Upgrade `assertj` to 3.8.0
+  - Set `jacoco` to 100% line and instruction coverage required
+  - Set `pitest` to 100% mutation and coverage required
+  - Use `lombok.val` in `ValueTest`
+  - Move `assertThat` calls to individual test methods in `ValueTest`
+
+* 0.2.0
+
+  - Added `Value`
+
+* 0.1.0
+
+  - Initial release
