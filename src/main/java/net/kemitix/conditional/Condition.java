@@ -77,13 +77,23 @@ public interface Condition {
     Condition and(Supplier<Boolean> clause);
 
     /**
-     * Logicaly OR current {@code Condition} with the other {@code Condition}.
+     * Logically AND current {@code Condition} with the other {@code Condition}.
      *
      * @param other the other Condition
      * @return true if both Conditions are true
      */
     default Condition and(Condition other) {
         return Condition.where(isTrue()).and(other::isTrue);
+    }
+
+    /**
+     * Logically AND current {@code Condition} with the other boolean.
+     *
+     * @param other the other boolean
+     * @return true if both Conditions are true
+     */
+    default Condition and(boolean other) {
+        return Condition.where(isTrue()).and(Condition.where(other));
     }
 
     /**
@@ -103,6 +113,16 @@ public interface Condition {
      */
     default Condition or(Condition other) {
         return where(isTrue()).or(other::isTrue);
+    }
+
+    /**
+     * Logically OR the current {@code Condition} with the other boolean.
+     *
+     * @param other the other boolean
+     * @return true if either Condition is true
+     */
+    default Condition or(boolean other) {
+        return where(isTrue()).or(Condition.where(other));
     }
 
     /**
@@ -131,22 +151,44 @@ public interface Condition {
     }
 
     /**
-     * Throw then exception if the {@code Condition} is {@code true}.
+     * Throw the exception if the {@code Condition} is {@code true}.
      *
      * @param exception the Exception to throw
      * @throws Exception the exception
+     * @deprecated use {@link #thenThrow(Supplier)}
      */
+    @Deprecated
     @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
     void thenThrow(Exception exception) throws Exception;
+
+    /**
+     * Throw the exception supplied if the {@code Condition} is {@code true}.
+     *
+     * @param exceptionSupplier the supplier of the Exception to throw
+     * @throws Exception the exception
+     */
+    @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
+    void thenThrow(Supplier<Exception> exceptionSupplier) throws Exception;
 
     /**
      * Throw then exception if the {@code Condition} is {@code false}.
      *
      * @param exception the Exception to throw
      * @throws Exception the exception
+     * @deprecated use {@link #otherwiseThrow(Supplier)}
      */
+    @Deprecated
     @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
     void otherwiseThrow(Exception exception) throws Exception;
+
+    /**
+     * Throw then exception if the {@code Condition} is {@code false}.
+     *
+     * @param exceptionSupplier the supplier of the Exception to throw
+     * @throws Exception the exception
+     */
+    @SuppressWarnings(SuppressHelper.CS_ILLEGALTHROWS)
+    void otherwiseThrow(Supplier<Exception> exceptionSupplier) throws Exception;
 
     /**
      * Apply the function to the Condtion, resulting an another Condition.

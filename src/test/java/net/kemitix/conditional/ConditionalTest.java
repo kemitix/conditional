@@ -30,7 +30,7 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereTrueThenRuns() {
         //when
-        when(true);
+        whenAndCondition(true);
         //then
         assertThatTheThenResponseRuns();
     }
@@ -38,39 +38,103 @@ public class ConditionalTest implements WithAssertions {
     @Test
     public void whereFalseOtherwiseRuns() {
         //when
-        when(false);
+        whenAndCondition(false);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
 
     @Test
-    public void whereTrueAndTrueThenRuns() {
+    public void whereTrueAndSupplierTrueThenRuns() {
         //when
-        when(true, true);
+        whenAndSupplier(true, true);
         //then
         assertThatTheThenResponseRuns();
     }
 
     @Test
-    public void whereTrueAndFalseThenOtherwiseRuns() {
+    public void whereTrueAndSupplierFalseThenOtherwiseRuns() {
         //when
-        when(true, false);
+        whenAndSupplier(true, false);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
 
     @Test
-    public void whereFalseAndTrueThenOtherwiseRuns() {
+    public void whereFalseAndSupplierTrueThenOtherwiseRuns() {
         //when
-        when(false, true);
+        whenAndSupplier(false, true);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
 
     @Test
-    public void whereFalseAndFalseThenOtherwiseRuns() {
+    public void whereFalseAndSupplierFalseThenOtherwiseRuns() {
         //when
-        when(false, false);
+        whenAndSupplier(false, false);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereTrueAndConditionTrueThenRuns() {
+        //when
+        whenAndCondition(true, true);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereTrueAndConditionFalseThenOtherwiseRuns() {
+        //when
+        whenAndCondition(true, false);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereFalseAndTrueConditionThenOtherwiseRuns() {
+        //when
+        whenAndCondition(false, true);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereFalseAndConditionFalseThenOtherwiseRuns() {
+        //when
+        whenAndCondition(false, false);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereTrueAndBooleanTrueThenRuns() {
+        //when
+        whenAndBoolean(true, true);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereTrueAndBooleanFalseThenOtherwiseRuns() {
+        //when
+        whenAndBoolean(true, false);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereFalseAndBooleanTrueThenOtherwiseRuns() {
+        //when
+        whenAndBoolean(false, true);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereFalseAndBooleanFalseThenOtherwiseRuns() {
+        //when
+        whenAndBoolean(false, false);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
@@ -87,33 +151,97 @@ public class ConditionalTest implements WithAssertions {
     }
 
     @Test
-    public void whereTrueOrTrueThenDoSomething() {
+    public void whereTrueOrSupplierTrueThenDoSomething() {
         //when
-        whenOr(true, true);
+        whenOrSupplier(true, true);
         //then
         assertThatTheThenResponseRuns();
     }
 
     @Test
-    public void whereTrueOrFalseThenDoSomething() {
+    public void whereTrueOrSupplierFalseThenDoSomething() {
         //when
-        whenOr(true, false);
+        whenOrSupplier(true, false);
         //then
         assertThatTheThenResponseRuns();
     }
 
     @Test
-    public void whereFalseOrTrueThenDoSomething() {
+    public void whereFalseOrSupplierTrueThenDoSomething() {
         //when
-        whenOr(false, true);
+        whenOrSupplier(false, true);
         //then
         assertThatTheThenResponseRuns();
     }
 
     @Test
-    public void whereFalseOrFalseThenDoSomethingElse() {
+    public void whereFalseOrSupplierFalseThenDoSomethingElse() {
         //when
-        whenOr(false, false);
+        whenOrSupplier(false, false);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereTrueOrConditionTrueThenDoSomething() {
+        //when
+        whenOrCondition(true, true);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereTrueOrConditionFalseThenDoSomething() {
+        //when
+        whenOrCondition(true, false);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereFalseOrConditionTrueThenDoSomething() {
+        //when
+        whenOrCondition(false, true);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereFalseOrConditionFalseThenDoSomethingElse() {
+        //when
+        whenOrCondition(false, false);
+        //then
+        assertThatTheOtherwiseResponseRuns();
+    }
+
+    @Test
+    public void whereTrueOrBooleanTrueThenDoSomething() {
+        //when
+        whenOrBoolean(true, true);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereTrueOrBooleanFalseThenDoSomething() {
+        //when
+        whenOrBoolean(true, false);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereFalseOrBooleanTrueThenDoSomething() {
+        //when
+        whenOrBoolean(false, true);
+        //then
+        assertThatTheThenResponseRuns();
+    }
+
+    @Test
+    public void whereFalseOrBooleanFalseThenDoSomethingElse() {
+        //when
+        whenOrBoolean(false, false);
         //then
         assertThatTheOtherwiseResponseRuns();
     }
@@ -261,13 +389,23 @@ public class ConditionalTest implements WithAssertions {
         assertThatTheOtherwiseResponseDidNotRun();
     }
 
-    private void when(final boolean clause) {
+    private void whenAndCondition(final boolean clause) {
         Condition.where(clause)
                 .then(thenResponse)
                 .otherwise(otherwiseResponse);
     }
 
-    private void when(
+    private void whenAndCondition(
+            final boolean firstClause,
+            final boolean secondClause
+    ) {
+        Condition.where(firstClause)
+                .and(Condition.where(secondClause))
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
+    }
+
+    private void whenAndSupplier(
             final boolean firstClause,
             final boolean secondClause
     ) {
@@ -277,7 +415,27 @@ public class ConditionalTest implements WithAssertions {
                 .otherwise(otherwiseResponse);
     }
 
-    private void whenOr(
+    private void whenAndBoolean(
+            final boolean firstClause,
+            final boolean secondClause
+    ) {
+        Condition.where(firstClause)
+                .and(secondClause)
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
+    }
+
+    private void whenOrCondition(
+            final boolean firstClause,
+            final boolean secondClause
+    ) {
+        Condition.where(firstClause)
+                .or(Condition.where(secondClause))
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
+    }
+
+    private void whenOrSupplier(
             final boolean firstClause,
             final boolean secondClause
     ) {
@@ -287,8 +445,18 @@ public class ConditionalTest implements WithAssertions {
                 .otherwise(otherwiseResponse);
     }
 
+    private void whenOrBoolean(
+            final boolean firstClause,
+            final boolean secondClause
+    ) {
+        Condition.where(firstClause)
+                .or(secondClause)
+                .then(thenResponse)
+                .otherwise(otherwiseResponse);
+    }
+
     @Test
-    public void shortCurcuitOr() {
+    public void shortCircuitOr() {
         //given
         final AtomicInteger atomicInteger = new AtomicInteger();
         //when
@@ -301,7 +469,7 @@ public class ConditionalTest implements WithAssertions {
     }
 
     @Test
-    public void shortCurcuitAnd() {
+    public void shortCircuitAnd() {
         //given
         final AtomicInteger atomicInteger = new AtomicInteger();
         //when
@@ -318,11 +486,27 @@ public class ConditionalTest implements WithAssertions {
         //given
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(() -> Condition.where(true)
+                        .thenThrow(IOException::new));
+    }
+
+    @Test
+    public void whereTrueThenThrowExceptionDeprecated() {
+        //given
+        assertThatExceptionOfType(IOException.class)
+                .isThrownBy(() -> Condition.where(true)
                         .thenThrow(new IOException()));
     }
 
     @Test
     public void whereFalseThenDoNotThrowException() throws Exception {
+        assertThatCode(() ->
+                Condition.where(false)
+                        .thenThrow(IOException::new))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    public void whereFalseThenDoNotThrowExceptionDeprecated() throws Exception {
         assertThatCode(() ->
                 Condition.where(false)
                         .thenThrow(new IOException()))
@@ -334,11 +518,27 @@ public class ConditionalTest implements WithAssertions {
         //given
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(() -> Condition.where(false)
+                        .otherwiseThrow(IOException::new));
+    }
+
+    @Test
+    public void whereFalseOtherwiseThenThrowExceptionDeprecated() {
+        //given
+        assertThatExceptionOfType(IOException.class)
+                .isThrownBy(() -> Condition.where(false)
                         .otherwiseThrow(new IOException()));
     }
 
     @Test
     public void whereTrueOtherwiseThenDoNotThrowException() throws Exception {
+        assertThatCode(() ->
+                Condition.where(true)
+                        .otherwiseThrow(IOException::new))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    public void whereTrueOtherwiseThenDoNotThrowExceptionDeprecated() throws Exception {
         assertThatCode(() ->
                 Condition.where(true)
                         .otherwiseThrow(new IOException()))
