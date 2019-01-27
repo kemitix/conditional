@@ -59,7 +59,7 @@ final class FalseCondition implements Condition {
     }
 
     @Override
-    public void thenThrow(final Supplier<Exception> exceptionSupplier) throws Exception {
+    public void thenThrow(final Supplier<Exception> exceptionSupplier) {
         // do nothing
     }
 

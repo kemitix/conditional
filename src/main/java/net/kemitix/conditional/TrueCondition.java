@@ -65,12 +65,12 @@ final class TrueCondition implements Condition {
     }
 
     @Override
-    public void otherwiseThrow(final Exception exception) throws Exception {
+    public void otherwiseThrow(final Exception exception) {
         // do nothing
     }
 
     @Override
-    public void otherwiseThrow(final Supplier<Exception> exceptionSupplier) throws Exception {
+    public void otherwiseThrow(final Supplier<Exception> exceptionSupplier) {
         // do nothing
     }
 
