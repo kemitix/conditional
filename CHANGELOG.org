@@ -26,7 +26,7 @@ The format is based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]
 ** Dependencies 
 
    - Bump assertj-core from 3.11.0 to 3.11.1 (#38)
-   - Bump kemitix-maven-tiles from 0.9.0 to 1.3.1 (#40)
+   - Bump kemitix-maven-tiles from 0.9.0 to 2.1.3 (#40)(#44)
    - Bump kemitix-parent from 5.1.1 to 5.2.0 (#39)
 
 * 0.7.0
