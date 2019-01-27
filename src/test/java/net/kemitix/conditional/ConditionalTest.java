@@ -318,11 +318,27 @@ public class ConditionalTest implements WithAssertions {
         //given
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(() -> Condition.where(true)
+                        .thenThrow(IOException::new));
+    }
+
+    @Test
+    public void whereTrueThenThrowExceptionDeprecated() {
+        //given
+        assertThatExceptionOfType(IOException.class)
+                .isThrownBy(() -> Condition.where(true)
                         .thenThrow(new IOException()));
     }
 
     @Test
     public void whereFalseThenDoNotThrowException() throws Exception {
+        assertThatCode(() ->
+                Condition.where(false)
+                        .thenThrow(IOException::new))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    public void whereFalseThenDoNotThrowExceptionDeprecated() throws Exception {
         assertThatCode(() ->
                 Condition.where(false)
                         .thenThrow(new IOException()))
@@ -334,11 +350,27 @@ public class ConditionalTest implements WithAssertions {
         //given
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(() -> Condition.where(false)
+                        .otherwiseThrow(IOException::new));
+    }
+
+    @Test
+    public void whereFalseOtherwiseThenThrowExceptionDeprecated() {
+        //given
+        assertThatExceptionOfType(IOException.class)
+                .isThrownBy(() -> Condition.where(false)
                         .otherwiseThrow(new IOException()));
     }
 
     @Test
     public void whereTrueOtherwiseThenDoNotThrowException() throws Exception {
+        assertThatCode(() ->
+                Condition.where(true)
+                        .otherwiseThrow(IOException::new))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    public void whereTrueOtherwiseThenDoNotThrowExceptionDeprecated() throws Exception {
         assertThatCode(() ->
                 Condition.where(true)
                         .otherwiseThrow(new IOException()))

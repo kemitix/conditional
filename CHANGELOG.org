@@ -5,12 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]], and this project adheres to
 [[https://semver.org/spec/v2.0.0.html][Semantic Versioning]].
 
-* 0.7.1
+* 1.0.0
+  
+** Added
 
-  - Bump assertj-core from 3.11.0 to 3.11.1 (#38)
-  - Bump kemitix-maven-tiles from 0.9.0 to 1.3.1 (#40)
-  - [jenkins] Compatibility build against java 11 (#40)
-  - Bump kemitix-parent from 5.1.1 to 5.2.0 (#39)
+   - ~Condition.thenThrow(Supplier<Exception>)~
+   - ~Condition.otherwiseThrow(Supplier<Exception>)~
+
+** Changed
+
+   - [jenkins] Compatibility build against java 11 (#40)
+
+** Deprecated
+
+   - ~Condition.thenThrow(Exception)~
+   - ~Condition.otherwiseThrow(Exception)~
+
+** Dependencies 
+
+   - Bump assertj-core from 3.11.0 to 3.11.1 (#38)
+   - Bump kemitix-maven-tiles from 0.9.0 to 1.3.1 (#40)
+   - Bump kemitix-parent from 5.1.1 to 5.2.0 (#39)
 
 * 0.7.0
 
