@@ -77,13 +77,23 @@ public interface Condition {
     Condition and(Supplier<Boolean> clause);
 
     /**
-     * Logicaly OR current {@code Condition} with the other {@code Condition}.
+     * Logically AND current {@code Condition} with the other {@code Condition}.
      *
      * @param other the other Condition
      * @return true if both Conditions are true
      */
     default Condition and(Condition other) {
         return Condition.where(isTrue()).and(other::isTrue);
+    }
+
+    /**
+     * Logically AND current {@code Condition} with the other boolean.
+     *
+     * @param other the other boolean
+     * @return true if both Conditions are true
+     */
+    default Condition and(boolean other) {
+        return Condition.where(isTrue()).and(Condition.where(other));
     }
 
     /**
@@ -103,6 +113,16 @@ public interface Condition {
      */
     default Condition or(Condition other) {
         return where(isTrue()).or(other::isTrue);
+    }
+
+    /**
+     * Logically OR the current {@code Condition} with the other boolean.
+     *
+     * @param other the other boolean
+     * @return true if either Condition is true
+     */
+    default Condition or(boolean other) {
+        return where(isTrue()).or(Condition.where(other));
     }
 
     /**
