@@ -16,7 +16,7 @@
     <properties>
         <kemitix-checkstyle.version>4.1.1</kemitix-checkstyle.version>
         <junit.version>4.12</junit.version>
-        <assertj.version>3.12.2</assertj.version>
+        <assertj.version>3.13.1</assertj.version>
         <tiles-maven-plugin.version>2.15</tiles-maven-plugin.version>
         <kemitix-maven-tiles.version>2.2.0</kemitix-maven-tiles.version>
         <lombok.version>1.18.8</lombok.version>
