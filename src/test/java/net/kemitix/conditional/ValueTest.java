@@ -2,7 +2,7 @@ package net.kemitix.conditional;
 
 import lombok.val;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
