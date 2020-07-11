@@ -1,8 +1,8 @@
 package net.kemitix.conditional;
 
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +21,7 @@ public class ConditionalTest implements WithAssertions {
     private final org.assertj.core.api.Condition<? super Condition> falseCondition =
             new org.assertj.core.api.Condition<>(Condition::isFalse, "is false");
 
-    @Before
+    @BeforeEach
     public void setUp() {
         thenResponse = () -> thenFlag = true;
         otherwiseResponse = () -> otherwiseFlag = true;
